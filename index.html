@@ -1,0 +1,1755 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#2457d6">
+<meta name="description" content="本机优先的复习题库：填空、简答、错题重练，可离线使用，登录后可多设备同步。">
+<link rel="icon" href="icon-192.png" sizes="192x192">
+<script>if(location.protocol==='http:'||location.protocol==='https:'){var _m=document.createElement('link');_m.rel='manifest';_m.href='manifest.json';document.head.appendChild(_m)}</script>
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="复习题库">
+<title>随身复习题库</title>
+<style>
+:root{--bg:#f4f6fb;--card:#fff;--text:#172033;--muted:#65718a;--line:#dde3ef;--primary:#2457d6;--primary-strong:#1c46b4;--primary2:#eaf0ff;--good:#12784a;--bad:#b42318;--shadow:0 6px 28px #1a2b4b0f}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}
+button{border:0;border-radius:12px;padding:11px 16px;background:var(--primary);color:#fff;cursor:pointer;font-weight:600;transition:background .15s,transform .05s}
+button:hover{background:var(--primary-strong)}
+button:active{transform:translateY(1px)}
+button.secondary{background:#eef1f7;color:#24314a}
+button.secondary:hover{background:#e3e9f4}
+button.danger{background:#fff0ef;color:var(--bad)}
+button.danger:hover{background:#ffe3e0}
+button.ghost{background:transparent;border:1px solid var(--line);color:#4a5873;font-weight:600}
+button.ghost:hover{background:#f3f6fc;border-color:#c9d4e8}
+button.ghost.on{background:var(--primary2);border-color:#c9d7fb;color:var(--primary)}
+button.ghost.danger{color:var(--bad);border-color:#f0c8c4}
+button.ghost.danger:hover{background:#fff0ef;border-color:#e4a9a3}
+button:disabled{opacity:.42;cursor:not-allowed}
+input,select,textarea{width:100%;border:1px solid var(--line);border-radius:11px;padding:12px;background:#fff;color:var(--text);font-size:15.5px}
+input:focus,select:focus,textarea:focus{outline:0;border-color:#9fb7f3;box-shadow:0 0 0 3px #2457d61f}
+textarea{min-height:96px;resize:vertical}
+label{display:block;font-size:13px;font-weight:650;color:var(--muted);margin:10px 0 6px}
+.app{max-width:1280px;margin:auto;padding:18px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.top .row button{flex:0 0 auto;white-space:nowrap}
+.brand{font-size:23px;font-weight:800;letter-spacing:-.5px}
+.sub{font-size:13px;color:var(--muted)}
+.status{display:inline-flex;align-items:center;gap:6px;background:#e9edf5;border-radius:99px;padding:6px 11px;font-size:12.5px;color:#34415b}
+.dot{width:7px;height:7px;border-radius:50%;background:#98a2b3}
+.dot.ok{background:#18a058}
+.dot.warn{background:#d97706}
+.dot.bad{background:#b42318}
+.tabs{display:flex;gap:8px;overflow:auto;padding:3px 0 14px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{white-space:nowrap;background:#e9edf5;color:#31405c;font-size:15px;padding:11px 18px}
+.tab:hover{background:#dfe5f0}
+.tab.active{background:var(--primary);color:#fff}
+.layout{display:grid;grid-template-columns:272px minmax(0,1fr);gap:18px;align-items:start}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:var(--shadow);min-width:0}
+.sidebar .card{margin-bottom:12px}
+.section-title{font-size:17.5px;font-weight:800;margin:0 0 10px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.stat{padding:11px 10px;border-radius:12px;background:#f3f6fc}
+.stat b{display:block;font-size:24px;line-height:1.25}
+.stat span{font-size:12px;color:var(--muted)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.row>*{flex:1}
+.row .fit{flex:0 0 auto}
+.muted{color:var(--muted)}
+.small{font-size:13.5px}
+.hr{height:1px;background:var(--line);margin:15px 0}
+.progress{height:8px;background:#e8edf5;border-radius:99px;overflow:hidden}
+.progress>div{height:100%;background:var(--primary);width:0;transition:width .2s ease}
+.pill{font-size:12px;border-radius:99px;padding:4px 10px;background:#eef1f7;color:#44516a;display:inline-block;font-weight:600}
+.pill.bad{background:#fff0ef;color:#a52820}
+.pill.good{background:#eaf8f0;color:#12663e}
+.pill.star{background:#fff8e7;color:#8a5a00}
+.hidden{display:none!important}
+.list{display:grid;gap:10px}
+.qitem{border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;justify-content:space-between;gap:14px;align-items:flex-start;background:#fff}
+.qitem p{margin:4px 0;font-size:16.5px;line-height:1.65}
+.qitem button{min-height:44px;padding:0 16px}
+.notice{padding:12px 13px;border-radius:11px;background:#fff8e7;color:#7c4a03;font-size:13.5px;margin:10px 0;line-height:1.7}
+.okbox{padding:12px 13px;border-radius:11px;background:#eaf8f0;color:#12663e;font-size:13.5px;margin:10px 0}
+.errbox{padding:12px 13px;border-radius:11px;background:#fff0ef;color:#98251d;font-size:13.5px;margin:10px 0;white-space:pre-wrap}
+.foot{font-size:12.5px;color:var(--muted);margin:18px 2px}
+.modal{position:fixed;inset:0;background:#10182888;display:flex;align-items:center;justify-content:center;padding:14px;z-index:10}
+.modalbox{background:#fff;border-radius:16px;padding:20px;width:min(820px,100%);max-height:92vh;overflow:auto}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#172033;color:#fff;padding:12px 18px;border-radius:12px;z-index:20;max-width:90%;box-shadow:var(--shadow);font-size:15px}
+.storebanner{position:fixed;top:0;left:0;right:0;z-index:30;background:#98251d;color:#fff;padding:9px 14px;font-size:13.5px;line-height:1.5;display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.filelabel{display:inline-block;padding:11px 15px;border-radius:11px;background:#eef1f7;color:#24314a;cursor:pointer;font-size:14px;font-weight:600}
+.filelabel input{display:none}
+code{background:#f0f2f7;padding:2px 5px;border-radius:5px;overflow-wrap:anywhere}
+details summary{cursor:pointer;font-weight:700}
+.genitem{border:1px solid var(--line);border-radius:13px;padding:13px;margin:10px 0;background:#fbfcff}
+.genitem h4{margin:0 0 7px;font-size:15.5px;line-height:1.6}
+.kv{display:grid;grid-template-columns:120px 1fr;gap:5px;font-size:13.5px}
+.kv span{color:var(--muted)}
+.banner{border:1px solid #f0c27a;background:#fff8e7;border-radius:12px;padding:12px;margin-bottom:12px;font-size:14px}
+.checkrow{display:flex;gap:8px;align-items:center;font-size:14px}
+.checkrow input{width:auto}
+/* ---- 复习主卡：题目显示与作答区域 ---- */
+.qcard{padding:clamp(20px,3vw,34px);border-radius:20px}
+.qtop{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.qmeta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0}
+.qmeta .pill{font-size:13px;padding:5px 12px}
+.qcounter{font-size:15px;font-weight:700;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.mode-select{width:auto;min-width:132px;padding:9px 12px;font-size:14px;border-radius:10px;background:#f7f9fd}
+.qsub{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px}
+.qsource{font-size:12.5px;max-width:100%;overflow-wrap:anywhere}
+.qsubtext{font-size:13.5px;color:var(--muted)}
+.qprogress{height:10px;margin:16px 0 0}
+.question{white-space:pre-wrap;margin:12px 0;font-weight:600}
+#qStem{font-size:clamp(21px,2.1vw,26px);font-weight:650;line-height:1.8;letter-spacing:.01em;margin:26px 0 18px}
+.qcard.empty #qStem{font-size:18px;font-weight:500;color:var(--muted);line-height:1.8;margin:20px 0}
+.thinkhint{font-size:15px;color:var(--muted);background:#f5f7fc;border:1px dashed #d6dfef;border-radius:12px;padding:14px 16px}
+.studyactions{display:grid;grid-template-columns:minmax(96px,.72fr) minmax(0,1.9fr) minmax(96px,.72fr);gap:12px;margin-top:22px}
+.big{min-height:56px;font-size:17px;border-radius:14px;font-weight:700;padding:0 18px}
+#showAns{font-size:18.5px;box-shadow:0 8px 20px #2457d633}
+.studymeta{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.studymeta button{min-height:42px;padding:0 16px;font-size:14px}
+.answerpanel{margin-top:4px;border-top:1px solid var(--line);padding-top:22px;display:grid;gap:16px}
+.answerblock{background:#f7f9fe;border:1px solid #e2e9f6;border-radius:14px;padding:18px 20px}
+.answerblock.answer-main{background:#f2f7ff;border-color:#d3e0fb}
+.ablock-label{font-size:12.5px;font-weight:800;letter-spacing:.04em;color:var(--primary);margin-bottom:10px}
+.answertext{font-size:clamp(19px,1.8vw,23px);line-height:1.75;font-weight:650;overflow-wrap:anywhere}
+.explaintext{font-size:17px;line-height:1.9;color:#28344c;overflow-wrap:anywhere}
+.answer-tags{font-size:14px;color:var(--muted);overflow-wrap:anywhere}
+.ratebar{display:grid;grid-template-columns:minmax(0,340px);gap:12px}
+.rate-good{background:var(--good)}
+.rate-good:hover{background:#0d5f3a}
+.rate-bad{background:var(--bad)}
+.rate-bad:hover{background:#94180f}
+@media(max-width:760px){
+.app{padding:10px}
+.layout{grid-template-columns:1fr}
+.sidebar{order:2}
+.main{order:1}
+.card{padding:13px}
+.qcard{padding:18px 16px 22px;border-radius:16px}
+#qStem{font-size:20px;line-height:1.75;margin:20px 0 14px}
+.qcard.empty #qStem{font-size:17px}
+.studyactions{grid-template-columns:1fr 1fr;gap:10px}
+.studyactions #showAns{grid-column:1/-1;grid-row:1;min-height:58px}
+.studyactions #prevQ{grid-column:1;grid-row:2}
+.studyactions #nextQ{grid-column:2;grid-row:2}
+.answertext{font-size:19px}
+.explaintext{font-size:16px}
+.ratebar{grid-template-columns:1fr}
+.two,.three{grid-template-columns:1fr}
+.brand{font-size:20px}
+.qitem{flex-direction:column;align-items:stretch;gap:10px}
+.qmeta .pill{font-size:12px}
+.stats{grid-template-columns:repeat(3,1fr)}
+.stat{padding:9px}
+.stat b{font-size:20px}
+button{min-height:44px}
+}
+
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div><div class="brand">📚 随身复习题库</div><div class="sub">单文件 HTML · 多题库 · AI 生成 · 跨设备同步（v2）</div></div>
+    <div class="row" style="flex:0 1 auto"><span class="status"><i class="dot" id="syncDot"></i><span id="syncLabel">本机模式</span></span><button class="secondary" id="settingsBtn">设置 / 同步</button></div>
+  </header>
+  <div class="banner hidden" id="conflictBanner">⚠️ 检测到 <b id="conflictCount">0</b> 条同步冲突（另一台设备修改了同一道题）。<button class="secondary" id="openConflicts" style="margin-left:8px">查看并处理</button></div>
+  <nav class="tabs" id="tabs">
+    <button class="tab active" data-view="study">开始复习</button><button class="tab" data-view="wrong">错题重练</button><button class="tab" data-view="bank">题库管理</button><button class="tab" data-view="generate">AI 出题</button><button class="tab" data-view="stats">学习统计</button>
+  </nav>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="card">
+        <div class="section-title">当前题库</div>
+        <select id="bankSelect" style="width:100%"></select>
+        <div class="row" style="margin-top:9px"><button class="secondary" id="newBank">新建题库</button><button class="secondary" id="renameBank">重命名</button></div>
+        <div class="row" style="margin-top:9px"><button class="danger" id="deleteBank">删除本题库</button></div>
+        <div class="small muted" id="bankMeta" style="margin-top:8px"></div>
+        <div class="small muted" style="margin-top:6px">每个题库的题目、错题、统计、同步队列互相独立；切换题库即切换整套数据。</div>
+      </div>
+      <div class="card">
+        <div class="section-title">学习概况</div>
+        <div class="stats" style="grid-template-columns:repeat(2,1fr)">
+          <div class="stat"><b id="statTotal">0</b><span>题库题目</span></div>
+          <div class="stat"><b id="statWrong">0</b><span>错题</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="section-title">题库文件</div>
+        <label>导入题目 JSON（写入当前题库）</label>
+        <label class="filelabel">选择 JSON 文件<input id="importJson" type="file" accept=".json,application/json"></label>
+        <label>重复题目处理</label><select id="dupMode"><option value="skip">跳过重复（推荐）</option><option value="update">用导入内容更新</option><option value="copy">另存为新题</option></select>
+        <div class="hr"></div>
+        <div class="row"><button class="secondary" id="exportJson">导出本题库</button><button class="secondary" id="exportProgress">导出进度</button></div>
+        <div class="row" style="margin-top:9px"><button class="secondary" id="exportBackup">全部题库备份</button><label class="filelabel">恢复备份<input id="restoreFile" type="file" accept=".json,application/json"></label></div>
+        <div id="importReport"></div>
+        <div class="small muted" style="margin-top:8px">“全部题库备份”导出所有题库（一个文件）；“恢复备份”支持该多题库文件（同名库整体替换、新库追加）和单本题库备份。覆盖前自动存快照，可一键回滚。跨设备同步需在“设置 / 同步”配置 Supabase。
+        </div>
+      </div>
+      <div class="card">
+        <div class="section-title">筛选</div>
+        <label>题型</label><select id="filterType"><option value="all">全部题型</option><option value="fill">填空题</option><option value="short">简答题</option></select>
+        <label>难度</label><select id="filterDiff"><option value="all">全部难度</option><option value="简单">简单</option><option value="中等">中等</option><option value="困难">困难</option></select>
+        <label>状态</label><select id="filterState"><option value="all">全部</option><option value="wrong">错题</option><option value="favorite">收藏</option><option value="review">待复习</option></select>
+        <label>科目 / 标签</label><input id="filterTag" placeholder="例如：有机化学"/>
+        <button style="width:100%;margin-top:10px" id="applyFilter">应用筛选</button>
+      </div>
+    </aside>
+    <main class="main">
+      <section class="view" id="view-study">
+        <div class="card qcard" id="studyCard">
+          <div class="qtop">
+            <div class="qmeta"><span class="pill" id="qType">暂无题目</span><span class="qcounter" id="qCounter"></span></div>
+            <select id="studyMode" class="mode-select"><option value="all">全部题目</option><option value="wrong">错题</option><option value="favorite">收藏</option><option value="review">待复习</option><option value="random">随机练习</option></select>
+          </div>
+          <div class="qsub"><span class="pill qsource" id="qSource">题库为空</span><span class="qsubtext" id="studySubtitle">从题库中选择一道题开始。</span></div>
+          <div class="progress qprogress"><div id="studyBar"></div></div>
+          <div class="question" id="qStem">请先导入题库，或进入“AI 出题”生成题目。</div>
+          <div id="answerArea"></div>
+          <div id="feedbackArea"></div>
+          <div class="studyactions">
+            <button class="secondary big" id="prevQ">← 上一题</button>
+            <button class="big" id="showAns">显示答案与解析</button>
+            <button class="secondary big" id="nextQ">下一题 →</button>
+          </div>
+          <div class="studymeta">
+            <button class="ghost" id="btnFav">☆ 收藏本题</button>
+            <button class="ghost" id="btnReview">🔖 标记待复习</button>
+            <button class="ghost danger" id="btnDelete">🗑 删除本题</button>
+          </div>
+        </div>
+      </section>
+      <section class="view hidden" id="view-wrong">
+        <div class="card"><div class="section-title">错题重练</div><p class="muted small">错题规则：最近一次核对为“记为错题”的题目。显示答案后点“已掌握，移出错题”，或在错题页点“移出错题”，即可移出；移出后直到下一次被标为错题前不再计入，核对记录全部保留。移出状态会随题目同步到其他设备。</p><div class="row"><button id="startWrong">开始错题练习</button><button class="secondary" id="clearWrong">清空全部错题标记</button></div><div class="hr"></div><div id="wrongList" class="list"></div></div>
+      </section>
+      <section class="view hidden" id="view-bank">
+        <div class="card"><div class="row"><div class="section-title">题库管理</div><button class="secondary fit" id="addQuestion">手动添加</button></div><div class="small muted">题目存储在本机缓存，配置登录 Supabase 后按“每题一行”同步到云端；删除会同步到其他设备。</div><div class="hr"></div><div id="bankList" class="list"></div></div>
+      </section>
+      <section class="view hidden" id="view-generate">
+        <div class="card">
+          <div class="section-title">AI 从课件生成题目</div>
+          <div class="notice">当前为“前端直连”临时模式：API Key 只保存在本机浏览器 localStorage。公用电脑请勿保存密钥，用完请点击“清除本机密钥”。课件文本只会发送到你配置的 API 地址，不会上传到其他服务。生成结果必须先预览确认，确认前不会写入题库。</div>
+          <label>课件文件（PPTX / DOCX / PDF / TXT / MD）</label><input type="file" id="sourceFiles" accept=".pptx,.docx,.pdf,.txt,.md" multiple>
+          <div class="small muted" id="fileStatus">PPTX/DOCX/PDF 解析依赖可联网加载的浏览器库，解析在本机完成，不上传原始文件；扫描件 PDF 无法提取文本，需要先 OCR。</div>
+          <label>或直接粘贴课件文本</label><textarea id="sourceText" placeholder="粘贴课程讲义、课件提取文本……"></textarea>
+          <details id="sendPreviewBox"><summary>查看将发送给模型的文本预览</summary><div class="small muted" id="sendPreviewMeta"></div><pre id="sendPreview" style="white-space:pre-wrap;max-height:260px;overflow:auto;background:#f3f6fc;border-radius:10px;padding:10px;font-size:12px"></pre></details>
+          <div class="three"><div><label>生成题量</label><input id="genCount" type="number" min="3" max="80" value="15"></div><div><label>每批题量（分段控制）</label><input id="genPerBatch" type="number" min="2" max="20" value="5"></div><div><label>题型组合</label><select id="genTypes"><option value="mix">填空题 + 简答题</option><option value="fill">仅填空题</option><option value="short">仅简答题</option></select></div></div>
+          <div class="three"><div><label>难度倾向</label><select id="genDiff"><option value="中等">中等</option><option value="简单">简单</option><option value="困难">困难</option><option value="混合">混合</option></select></div><div class="checkrow" style="align-self:end;margin-bottom:10px"><input type="checkbox" id="genExpl" checked><label for="genExpl" style="margin:0">生成解析</label></div><div class="checkrow" style="align-self:end;margin-bottom:10px"><input type="checkbox" id="genTags" checked><label for="genTags" style="margin:0">生成知识点标签</label></div></div>
+          <label>额外要求（可选）</label><textarea id="genExtra" placeholder="例如：重点考查定义、原理和易混淆概念；答案必须依据课件。"></textarea>
+          <button style="width:100%;margin-top:12px" id="generateBtn">调用 API 生成题目（先预览）</button>
+          <div id="genStatus" class="small muted" style="margin-top:10px"></div>
+        </div>
+        <div class="card hidden" id="genPreviewCard" style="margin-top:14px">
+          <div class="section-title">生成结果预览（确认后才导入题库）</div>
+          <div class="small muted" id="genPreviewSummary"></div>
+          <div id="genPreviewList"></div>
+          <div class="row" style="margin-top:12px"><button id="confirmImport">确认导入以上题目</button><button class="danger" id="discardGen">放弃本次生成</button></div>
+        </div>
+      </section>
+      <section class="view hidden" id="view-stats">
+        <div class="card">
+          <div class="section-title">学习统计</div>
+          <div class="stats" style="margin-top:10px">
+            <div class="stat"><b id="sTotal">0</b><span>题库总题数</span></div>
+            <div class="stat"><b id="sWrong">0</b><span>错题</span></div>
+            <div class="stat"><b id="sReview">0</b><span>待复习</span></div>
+          </div>
+          <div class="hr"></div>
+          <div class="two"><div><h3 style="margin:4px 0">按题型</h3><div id="byTypeList" class="list"></div></div><div><h3 style="margin:4px 0">按知识点（前 10）</h3><div id="byTagList" class="list"></div></div></div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <div class="foot" id="footNote">提示：数据默认只保存在本机浏览器。配置 Supabase 后按“题目逐行 + 答题记录追加”同步，支持离线队列与冲突人工处理；未登录前不会向任何服务器发送数据。</div>
+</div>
+
+<div class="modal hidden" id="settingsModal"><div class="modalbox">
+  <div class="row"><div class="section-title">设置与跨设备同步</div><button class="secondary fit" id="closeSettings">关闭</button></div>
+  <details open><summary>1. AI API 设置</summary>
+    <div class="two"><div><label>API Base URL</label><input id="apiBase" placeholder="https://api.example.com/v1（也可填完整 /chat/completions 地址）"></div><div><label>模型名称</label><input id="apiModel" placeholder="例如 deepseek-chat"></div></div>
+    <label>API Key</label><input id="apiKey" type="password" autocomplete="off" placeholder="sk-..."/>
+    <div class="two"><div><label>请求超时（秒）</label><input id="apiTimeout" type="number" min="10" max="600" value="90"></div><div></div></div>
+    <div class="small muted">兼容 OpenAI /chat/completions 接口。浏览器直连可能被服务商 CORS 拦截；若长期多设备使用，建议改为自己的代理后端。</div>
+    <div class="row" style="margin-top:10px"><button id="saveAI">保存 AI 设置</button><button class="danger fit" id="clearKey">清除本机密钥</button></div>
+  </details>
+  <div class="hr"></div>
+  <details open><summary>2. Supabase 自动同步设置（可选，暂不开通不影响本机使用）</summary>
+    <label>Supabase Project URL</label><input id="sbUrl" placeholder="https://xxxxxxxx.supabase.co"/>
+    <label>Supabase anon / publishable key</label><input id="sbKey" type="password" autocomplete="off" placeholder="公开 anon key / sb_publishable_..."/>
+    <div class="two"><div><label>邮箱</label><input id="sbEmail" type="email" autocomplete="username" placeholder="you@example.com"></div><div><label>密码</label><input id="sbPassword" type="password" autocomplete="current-password" placeholder="至少 6 位，按项目配置"></div></div>
+    <div class="row" style="margin-top:10px"><button id="sbSignup">注册账号</button><button id="sbLogin">登录</button><button class="secondary" id="sbLogout">退出</button></div>
+    <div class="row" style="margin-top:10px"><button id="syncNow">立即同步</button><button class="secondary" id="reuploadAll">整库重传</button><button class="secondary" id="downloadSql">下载建表 SQL</button></div>
+    <div class="small muted" id="authStatus" style="margin-top:8px">未登录。请先在 Supabase 创建项目并执行页面下载的 SQL。</div>
+    <div class="small muted" id="syncDetail" style="margin-top:4px"></div>
+    <div id="stuckBox" style="margin-top:6px"></div>
+    <div class="notice">安全提示：只填写 Supabase 的 anon/publishable key，绝不要填写 service_role/secret key。数据库启用 RLS 后数据按登录用户隔离；未登录时不会发送任何数据请求。退出登录立即清除云端身份，本机题库保留。</div>
+  </details>
+  <div class="hr"></div>
+  <div class="row"><button class="secondary" id="clearLocal">清空本题库缓存（不删云端、不影响其他题库）</button><button class="secondary" id="rollbackSnapshot">回滚本题库到恢复前快照</button></div>
+</div></div>
+
+<div class="modal hidden" id="editModal"><div class="modalbox"><div class="row"><div class="section-title" id="editTitle">编辑题目</div><button class="secondary fit" id="closeEdit">关闭</button></div>
+  <label>题型</label><select id="eType"><option value="fill">填空题</option><option value="short">简答题</option></select>
+  <label>题干</label><textarea id="eStem"></textarea>
+  <label>标准答案（填空题多个可接受答案用 | 分隔；简答题填参考答案）</label><textarea id="eAnswer"></textarea>
+  <label>解析 / 评分要点</label><textarea id="eExplanation"></textarea>
+  <div class="three"><div><label>知识点 / 标签</label><input id="eTags"></div><div><label>来源 / 页码</label><input id="eSource"></div><div><label>难度</label><select id="eDiff"><option>简单</option><option selected>中等</option><option>困难</option></select></div></div>
+  <div class="row" style="margin-top:12px"><button id="saveQuestion">保存题目</button><button class="danger" id="deleteQuestion">删除题目</button></div>
+</div></div>
+
+<div class="modal hidden" id="confirmDeleteModal"><div class="modalbox" style="width:min(520px,100%)">
+  <div class="section-title">删除题目</div>
+  <p class="small muted">确定从当前题库删除这道题吗？删除会同步到其他设备，历史核对记录保留。</p>
+  <div class="qitem" style="margin-top:10px"><p><b id="confirmDeleteStem"></b></p></div>
+  <div class="row" style="margin-top:16px;justify-content:flex-end"><button class="secondary fit" id="cancelDelete">取消</button><button class="danger fit" id="confirmDelete">确认删除</button></div>
+</div></div>
+
+<div class="modal hidden" id="conflictModal"><div class="modalbox">
+  <div class="row"><div class="section-title">同步冲突处理</div><button class="secondary fit" id="closeConflicts">关闭</button></div>
+  <p class="small muted">冲突原因：本题在另一台设备上的修改已先到达云端。两台设备的修改都已保留，请选择保留哪一版，或把本机版另存为新题。</p>
+  <div id="conflictList" class="list"></div>
+</div></div>
+
+<div id="toast" class="toast hidden"></div>
+<script>
+'use strict';
+//<CORE-START>
+/* 纯逻辑核心：不依赖 DOM，可被 Node 测试直接提取执行 */
+function makeId(){try{if(typeof crypto!=='undefined'&&crypto.randomUUID)return crypto.randomUUID()}catch(e){}return 'id-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,10)}
+function nowIso(){return new Date().toISOString()}
+const SCHEMA_VERSION=2;
+function emptyData(){return{schema:SCHEMA_VERSION,questions:[],attempts:[],outbox:[],conflicts:[],lastPulledAt:0,createdAt:nowIso()}}
+function canonical(s){return String(s??'').normalize('NFKC').toLowerCase().replace(/[，。；;：:、\s]+/g,'').replace(/[“”"'‘’]/g,'')}
+function normType(t){let x=String(t||'').toLowerCase();return x==='fill'||['blank','fill_blank','填空','填空题'].includes(x)?'fill':'short'}
+function isLegacyChoice(t){return['single','single_choice','choice','单选','单选题','multiple','multiple_choice','多选','多选题'].includes(String(t||'').toLowerCase())}
+function normalizeOptions(options){if(!Array.isArray(options)&&options&&typeof options==='object')options=Object.entries(options).map(([k,v])=>({key:k,text:v}));options=Array.isArray(options)?options:[];return options.map((o,i)=>typeof o==='string'?{key:String.fromCharCode(65+i),text:o.replace(/^[A-Z][.、:：]\s*/,'')}:{key:String(o.key||o.label||String.fromCharCode(65+i)).replace(/[.、:：]$/,'').toUpperCase(),text:String(o.text||o.content||o.value||'')})}
+function normalizeQuestion(raw){
+  raw=raw&&typeof raw==='object'?raw:{};
+  const choice=isLegacyChoice(raw.type);
+  const type=choice?'short':normType(raw.type);
+  let stem=String(raw.stem??raw.question??raw.prompt??'').trim();
+  const options=normalizeOptions(raw.options??raw.choices);
+  if(choice&&options.length)stem+='\n'+options.map(o=>`${o.key}. ${o.text}`).join('\n');
+  let answer=raw.answer??raw.correct_answer??raw.reference_answer??'';
+  if(Array.isArray(answer))answer=answer.join('|');
+  let tags=Array.isArray(raw.tags)?raw.tags.join(', '):String(raw.tags??raw.knowledge_point??'');
+  return{id:typeof raw.id==='string'?raw.id:makeId(),type,stem,answer:String(answer).trim(),explanation:String(raw.explanation??raw.analysis??''),tags,source:String(raw.source??raw.source_page??raw.page??''),difficulty:String(raw.difficulty||'中等'),createdAt:raw.createdAt||nowIso(),updatedAt:nowIso(),version:Number(raw.version)||1,deleted:!!raw.deleted,favorite:!!raw.favorite,reviewMark:!!raw.reviewMark,resolvedAt:Number(raw.resolvedAt)||0,legacyChoice:choice||undefined}
+}
+function migrateV1(v1){
+  const d=emptyData();
+  if(!v1||typeof v1!=='object')return d;
+  for(const q of Array.isArray(v1.questions)?v1.questions:[]){
+    if(q&&isLegacyChoice(q.type)){q.explanation=[q.explanation&&('解析：'+q.explanation),'（本题原为选择题，已转为简答题，原答案：'+(Array.isArray(q.answer)?q.answer.join(','):(q.answer??''))+'）'].filter(Boolean).join('\n')}
+    d.questions.push(normalizeQuestion(q));
+  }
+  for(const a of Array.isArray(v1.attempts)?v1.attempts:[]){
+    if(!a||!a.qid)continue;
+    d.attempts.push({id:a.id||makeId(),qid:a.qid,answer:String(a.answer??''),correct:a.correct===null?null:!!a.correct,time:Number(a.time)||Date.now(),source:a.source||'migrated',selfRated:a.selfRated??null})
+  }
+  const w=Array.isArray(v1.wrongIds)?v1.wrongIds:[];
+  const lastTime={};for(const a of d.attempts){if(a.correct===false&&(!lastTime[a.qid]||a.time>lastTime[a.qid]))lastTime[a.qid]=a.time}
+  for(const qid of w){const t=lastTime[qid];if(!t)continue;const q=d.questions.find(x=>x.id===qid);if(q)q.resolvedAt=t-1}
+  d.createdAt=v1.createdAt||d.createdAt;
+  return d
+}
+// 旧版本把"移出错题"的时间戳存在 data.wrongResolved 映射里（只在本机、不同步）；现在挂到题目自身随版本同步
+function migrateWrongResolved(d){
+  if(!d||typeof d!=='object'||!d.wrongResolved||typeof d.wrongResolved!=='object')return d;
+  const w=new Map(Object.entries(d.wrongResolved).map(([k,v])=>[k,Number(v)||0]));
+  for(const q of Array.isArray(d.questions)?d.questions:[]){
+    const t=w.get(q.id);
+    if(t&&(Number(q.resolvedAt)||0)<t)q.resolvedAt=t
+  }
+  delete d.wrongResolved;
+  return d
+}
+function activeQuestions(d){return d.questions.filter(q=>!q.deleted)}
+function getQ(d,id){return d.questions.find(q=>q.id===id&&!q.deleted)}
+function attemptsFor(d,qid){return d.attempts.filter(a=>a.qid===qid).sort((x,y)=>x.time-y.time)}
+function isWrong(d,qid){
+  const aa=attemptsFor(d,qid);if(!aa.length)return false;
+  const q=d.questions.find(x=>x.id===qid);
+  const resolved=(q&&Number(q.resolvedAt))||0;
+  const last=aa[aa.length-1];
+  if(last.time<=resolved)return false;
+  if(last.correct===true)return false;
+  if(last.correct===false||(last.correct===null&&last.selfRated===false))return true;
+  for(let i=aa.length-1;i>=0;i--){const a=aa[i];if(a.time<=resolved)break;if(a.correct===false||a.selfRated===false)return true}
+  return false
+}
+function wrongCountFor(d,qid){return attemptsFor(d,qid).filter(a=>a.correct===false||a.selfRated===false).length}
+function computeStats(d,nowRef){
+  nowRef=nowRef??Date.now();
+  const qs=activeQuestions(d);
+  const answeredIds=new Set(d.attempts.map(a=>a.qid));
+  const answered=qs.filter(q=>answeredIds.has(q.id)).length;
+  const auto=d.attempts.filter(a=>a.correct===true||a.correct===false);
+  const correctN=d.attempts.filter(a=>a.correct===true).length;
+  const rate=auto.length?Math.round(correctN/auto.length*100):null;
+  const day0=new Date(nowRef);day0.setHours(0,0,0,0);
+  const today=d.attempts.filter(a=>a.time>=day0.getTime()).length;
+  const wrong=qs.filter(q=>isWrong(d,q.id)).length;
+  const byType={},byTag={};
+  for(const q of qs){const st=attemptsFor(d,q.id);const n=st.length,c=st.filter(a=>a.correct===true).length;
+    byType[q.type]=byType[q.type]||{total:0,answered:0,attempts:0,correct:0};byType[q.type].total++;if(n)byType[q.type].answered++;byType[q.type].attempts+=n;byType[q.type].correct+=c;
+    const tag=(q.tags||'未分类').split(/[,，]/)[0].trim()||'未分类';byTag[tag]=byTag[tag]||{total:0,answered:0,attempts:0,correct:0};byTag[tag].total++;if(n)byTag[tag].answered++;byTag[tag].attempts+=n;byTag[tag].correct+=c}
+  return{total:qs.length,answered,attempts:d.attempts.length,today,wrong,correct:correctN,autoTotal:auto.length,rate,byType,byTag}
+}
+function validateQuestionsInput(arr){
+  if(!Array.isArray(arr))return{ok:false,errors:[{row:0,reason:'JSON 顶层必须是数组，或包含 questions 数组的对象'}],items:[]};
+  const errors=[],items=[];
+  arr.forEach((raw,i)=>{
+    if(!raw||typeof raw!=='object'){errors.push({row:i+1,reason:'不是对象'});return}
+    const q=normalizeQuestion(raw);
+    if(!q.stem)errors.push({row:i+1,reason:'题干为空'});
+    else if(!q.answer)errors.push({row:i+1,reason:'答案为空'});
+    else items.push(q);
+  });
+  return{ok:errors.length===0&&items.length>0,errors,items,empty:errors.length===0&&items.length===0}
+}
+function stemKey(s){return canonical(s)}
+function mergeQuestions(existing,distinct,mode){
+  const byId=new Map(existing.map(q=>[q.id,q]));const byStem=new Map(existing.map(q=>[stemKey(q.stem),q]));
+  let added=0,updated=0,skipped=0;const dupes=[];const touched=[];
+  for(const q of distinct){
+    const known=byId.get(q.id)||byStem.get(stemKey(q.stem));
+    if(known){dupes.push({incoming:q,known});
+      if(mode==='skip'){skipped++;continue}
+      if(mode==='update'){const t=byId.get(known.id);t.type=q.type;t.stem=q.stem;t.answer=q.answer;t.explanation=q.explanation;t.tags=q.tags;t.source=q.source;t.difficulty=q.difficulty;t.updatedAt=nowIso();updated++;touched.push(t)}
+      else{const nq={...q,id:makeId(),createdAt:nowIso(),updatedAt:nowIso(),version:1};existing.push(nq);byId.set(nq.id,nq);byStem.set(stemKey(nq.stem),nq);added++;touched.push(nq)}
+    }else{existing.push(q);byId.set(q.id,q);byStem.set(stemKey(q.stem),q);added++;touched.push(q)}
+  }
+  return{added,updated,skipped,dupes,touched}
+}
+function checkAnswer(q,ans){
+  if(q.type==='fill'){const accepted=String(q.answer).split('|').map(canonical).filter(Boolean);return accepted.includes(canonical(ans))}
+  return null
+}
+function splitChunks(text,maxLen){
+  text=String(text||'');maxLen=maxLen||6000;
+  if(!text.trim())return[];
+  const paras=text.split(/\n{2,}/);const out=[];let cur='';
+  for(let p of paras){
+    while(p.length>maxLen){const cut=p.lastIndexOf('。',maxLen);const idx=cut>0?cut+1:(p.lastIndexOf('\n',maxLen)>0?p.lastIndexOf('\n',maxLen):maxLen);const head=p.slice(0,idx),tail=p.slice(idx);if(cur){out.push(cur);cur=''}out.push(head);p=tail}
+    if((cur+'\n\n'+p).length>maxLen){if(cur)out.push(cur);cur=p}else cur=cur?cur+'\n\n'+p:p;
+  }
+  if(cur)out.push(cur);
+  return out.filter(c=>c.trim())
+}
+function detectScannedPdf(pageTexts){
+  const n=pageTexts.length;if(!n)return{suspected:false,emptyRatio:0};
+  const empty=pageTexts.filter(t=>String(t||'').replace(/\s/g,'').length<5).length;
+  return{suspected:empty/n>=0.8,emptyRatio:empty/n}
+}
+function buildChatEndpoint(base){
+  let b=String(base||'').trim().replace(/\/+$/,'');
+  if(!b)return'';
+  if(/\/chat\/completions$/i.test(b))return b;
+  if(/\/v\d+$/i.test(b))return b+'/chat/completions';
+  return b+'/chat/completions'
+}
+function sanitizeSecrets(s){
+  return String(s??'').replace(/sk-[A-Za-z0-9_\-]{6,}/gi,'[密钥已隐藏]').replace(/eyJ[A-Za-z0-9_\-]{10,}\.[A-Za-z0-9_\-]{5,}\.[A-Za-z0-9_\-]{5,}/g,'[Token已隐藏]').replace(/(Bearer\s+)[^\s,;}"']{8,}/gi,'$1[已隐藏]').replace(/(apikey"\s*:\s*")[^"]{8,}"/gi,'$1[已隐藏]"').replace(/(apikey"\s*:\s*")[^"]{8,}"/gi,'$1[已隐藏]"')
+}
+function classifyApiError(status,bodyText){
+  const t=String(bodyText||'').slice(0,300);
+  if(status===401)return'API 认证失败（401）：Key 无效或已过期，请检查设置中的 API Key。';
+  if(status===403)return'API 拒绝访问（403）：Key 权限不足或地区限制。';
+  if(status===402)return'API 余额不足（402）：请为模型账户充值后重试。';
+  if(status===429)return'API 限流（429）：请求过于频繁或额度用尽，请稍后再试或减小每批题量。原始信息：'+sanitizeSecrets(t);
+  if(status===404)return'API 地址不存在（404）：请检查 Base URL 与模型名称。';
+  if(status>=500)return'模型服务异常（'+status+'）：服务商错误，稍后重试。原始信息：'+sanitizeSecrets(t);
+  return'API 返回 '+status+'：'+sanitizeSecrets(t)
+}
+function backoffDelay(failCount,base,cap){base=base||3000;cap=cap||600000;return Math.min(cap,base*Math.pow(2,Math.max(0,failCount-1)))}
+function qCloud(q){return{type:q.type,stem:q.stem,answer:q.answer,explanation:q.explanation,tags:q.tags,source:q.source,difficulty:q.difficulty,createdAt:q.createdAt,updatedAt:q.updatedAt,favorite:!!q.favorite,reviewMark:!!q.reviewMark,resolvedAt:Number(q.resolvedAt)||0}}
+function qFromCloud(row){const d=row.data||{};return{...normalizeQuestionRaw(d),id:row.id,version:Number(row.version)||1,deleted:!!row.deleted,updatedAt:row.updated_at||nowIso()}}
+function normalizeQuestionRaw(d){const base=normalizeQuestion({...d,id:d.id});return base}
+function applyRemoteChanges(d,remote,pendingQids){
+  d=structuredClone(d);const conflicts=[];const addedAttempts=[];
+  const rows=Array.isArray(remote.questions)?remote.questions:[];
+  for(const row of rows){
+    // 云端行 id 缺失或类型不对时无法定位本地题目，收下只会产生一条永远改不掉也删不掉的幽灵题
+    if(!row||typeof row.id!=='string'||!row.id)continue;
+    const remoteQ=qFromCloud(row);
+    const local=d.questions.find(q=>q.id===row.id);
+    if(pendingQids&&pendingQids.has(row.id)){
+      if(local)conflicts.push({cid:makeId(),qid:row.id,local:JSON.parse(JSON.stringify(local)),remote:remoteQ,at:Date.now()});
+      if(local){const keepFav=local.favorite,keepRev=local.reviewMark,keepRes=Number(local.resolvedAt)||0;Object.assign(local,remoteQ);local.favorite=keepFav;local.reviewMark=keepRev;local.resolvedAt=Math.max(keepRes,Number(remoteQ.resolvedAt)||0)}
+      else d.questions.push(remoteQ);
+      continue;
+    }
+    if(!local){d.questions.push(remoteQ)}
+    else if(Number(row.version)>(local.version||1)){Object.assign(local,remoteQ)}
+  }
+  const known=new Set(d.attempts.map(a=>a.id));
+  for(const row of (Array.isArray(remote.attempts)?remote.attempts:[])){
+    if(!row||typeof row.id!=='string'||!row.id)continue;
+    if(known.has(row.id))continue;
+    const a=row.data||{};
+    d.attempts.push({id:row.id,qid:a.qid||row.qid,answer:String(a.answer??''),correct:a.correct===null?null:(a.correct===undefined?null:!!a.correct),time:Number(a.time)||Date.now(),source:'cloud',selfRated:a.selfRated??null});
+    addedAttempts.push(row.id);
+  }
+  return{data:d,conflicts}
+}
+// 服务器明确拒绝这条数据本身（载荷非法、id 属于别人、行过大）= 永久失败：搁置这一条、继续推后面的，
+// 否则整条队列会被一条坏操作永久卡死且只报"同步失败"。
+// 401 登录过期、404 函数未创建、408/429 限流、5xx 与网络错误都是暂时性的，必须整队保留重试。
+function isPermanentPushError(e){
+  const s=Number(e&&e.status);
+  if(!Number.isFinite(s)||s<400||s>=500)return false;
+  return s!==401&&s!==404&&s!==408&&s!==429
+}
+function createSyncEngine(deps){
+  const {getAuth,request,getData,setData,persist,persistQuiet,getBankId,getBankName}=deps;
+  // 推送循环里每确认一条都要落盘（页面崩了不能重复推送导致版本冲突），但不必每条都重绘界面
+  const writeQuiet=typeof persistQuiet==='function'?persistQuiet:persist;
+  function bankTag(){return getBankId?String(getBankId()||''):''}
+  function bankNameOf(){return getBankName?String(getBankName()||''):''}
+  function removeOutbox(opId){const d=getData();d.outbox=d.outbox.filter(o=>o.opId!==opId);writeQuiet()}
+  function recordConflict(qid,localQ,remoteRow){
+    const d=getData();const remoteQ=qFromCloud(remoteRow);
+    const i=d.conflicts.findIndex(c=>c.qid===qid);
+    const c={cid:makeId(),qid,local:localQ,remote:remoteQ,at:Date.now()};
+    if(i>=0)d.conflicts[i]=c;else d.conflicts.push(c);
+    const q=d.questions.find(x=>x.id===qid);
+    if(q){const keepFav=q.favorite,keepRev=q.reviewMark,keepRes=Number(q.resolvedAt)||0;Object.assign(q,remoteQ);q.favorite=keepFav;q.reviewMark=keepRev;q.resolvedAt=Math.max(keepRes,Number(remoteQ.resolvedAt)||0)}
+    else d.questions.push(remoteQ);
+    writeQuiet()
+  }
+  return{
+    pendingCount(){return getData().outbox.length},
+    stuckCount(){return getData().outbox.filter(o=>o.stuck).length},
+    pushableCount(){return getData().outbox.filter(o=>!o.stuck).length},
+    stuckOps(){return getData().outbox.filter(o=>o.stuck)},
+    retryStuck(){const n=getData().outbox.filter(o=>o.stuck).length;for(const o of getData().outbox)if(o.stuck){delete o.stuck;delete o.err;delete o.stuckAt}persist();return n},
+    dropStuck(opId){const d=getData();d.outbox=d.outbox.filter(o=>o.opId!==opId);persist()},
+    enqueueQuestion(q){const d=getData();const b=bankTag();const bn=bankNameOf();const payload={data:b?{...qCloud(q),bank:b,...(bn?{bankName:bn}:{})}:qCloud(q),baseVersion:q.version,deleted:!!q.deleted};const op={opId:makeId(),kind:'q',entityId:q.id,payload};const i=d.outbox.findIndex(o=>o.kind==='q'&&o.entityId===q.id);if(i>=0)d.outbox[i]=op;else d.outbox.push(op);persist()},
+    enqueueDelete(q){this.enqueueQuestion({...q,deleted:true,version:(q.version||1)})},
+    enqueueAttempt(a){const d=getData();const b=bankTag();const bn=bankNameOf();const payload=JSON.parse(JSON.stringify(a));if(b)payload.bank=b;if(bn)payload.bankName=bn;const op={opId:makeId(),kind:'attempt',entityId:a.id,payload};const i=d.outbox.findIndex(o=>o.kind==='attempt'&&o.entityId===a.id);if(i>=0)d.outbox[i]=op;else d.outbox.push(op);persist()},
+    async syncOnce(opts){
+      opts=opts||{};
+      const auth=getAuth();if(!auth||!auth.access_token)return{ok:false,reason:'auth'};
+      const d=getData();
+      const OVERLAP=15000;
+      // PostgREST 默认只回 1000 行，题库/记录超过后旧代码会静默丢掉后半部分，故按 id 分页取完
+      const PAGE=1000,MAX_PAGES=200;
+      const pullTable=async(table,cols,col,since)=>{
+        const base='/rest/v1/'+table+'?select='+cols+(since?('&'+col+'=gt.'+encodeURIComponent(since)):'');
+        const acc=[];
+        for(let p=0;p<MAX_PAGES;p++){
+          const rows=await request(base+'&order=id.asc&limit='+PAGE+'&offset='+(p*PAGE))||[];
+          for(const r of rows)acc.push(r);
+          if(rows.length<PAGE)return acc;
+        }
+        throw Error('云端数据超过 '+(MAX_PAGES*PAGE)+' 行，请先用「全部题库备份」导出整理')
+      };
+      const pull=async since=>[
+        await pullTable('questions','id,data,version,deleted,updated_at','updated_at',since),
+        await pullTable('answer_attempts','id,qid,data,created_at','created_at',since)
+      ];
+      const since=opts.fullPull?null:(d.lastPulledAt?new Date(d.lastPulledAt-OVERLAP).toISOString():null);
+      let rq=[],ra=[];
+      try{[rq,ra]=await pull(since)}catch(e){return{ok:false,reason:'pull',error:sanitizeSecrets(String(e.message||e))}}
+      const serverNow=Number(request.serverTimeMs)||0;
+      // 旧版本的游标来自本机时钟，本机偏快时会越过服务器真实更新时间；发现游标超前就本轮全量补拉
+      if(since&&serverNow&&d.lastPulledAt-OVERLAP>serverNow){
+        try{[rq,ra]=await pull(null)}catch(e){return{ok:false,reason:'pull',error:sanitizeSecrets(String(e.message||e))}}
+      }
+      const bb=bankTag();
+      const rbMap={};
+      const metaRows=[],qRows=[];
+      for(const r of rq){if(!r||typeof r.id!=='string'||!r.id)continue;if(isBankMetaRow(r))metaRows.push(r);else qRows.push(r)}
+      rq=qRows;
+      for(const r of rq){const t=r&&r.data&&r.data.bank;if(!t||r.deleted)continue;const e=rbMap[t]||(rbMap[t]={tag:String(t),name:'',count:0});e.count++;if(r.data.bankName)e.name=String(r.data.bankName)}
+      const bankMeta=metaRows.map(r=>bankMetaFromRow(r));
+      for(const m of bankMeta){
+        if(m.deleted){if(m.tag)delete rbMap[m.tag];continue}
+        if(m.name&&m.tag&&rbMap[m.tag])rbMap[m.tag].name=m.name
+      }
+      if(bb){rq=rq.filter(r=>!r||!r.data||r.data.bank===undefined||r.data.bank===bb);ra=ra.filter(r=>!r||!r.data||r.data.bank===undefined||r.data.bank===bb)}
+      const pend=new Set(d.outbox.filter(o=>o.kind==='q').map(o=>o.entityId));
+      const applied=applyRemoteChanges(d,{questions:rq,attempts:ra},pend);
+      if(applied.conflicts.length){applied.data.conflicts=applied.data.conflicts.concat(applied.conflicts)}
+      setData(applied.data);
+      let pushed=0;const errs=[];const stuckMsgs=[];
+      for(const op of [...getData().outbox]){
+        if(op.stuck)continue;
+        try{
+          if(op.kind==='q'){
+            const r=await request('/rest/v1/rpc/sync_question',{method:'POST',body:{p_id:op.entityId,p_data:op.payload.data,p_base_version:op.payload.baseVersion,p_deleted:!!op.payload.deleted}});
+            if(r&&r.status==='ok'){const q=getData().questions.find(x=>x.id===op.entityId);if(q)q.version=r.version;removeOutbox(op.opId)}
+            else if(r&&r.status==='conflict'){recordConflict(op.entityId,op.payload.data,r.row);removeOutbox(op.opId)}
+            else{errs.push('服务器返回异常');break}
+          }else{
+            await request('/rest/v1/rpc/add_attempt',{method:'POST',body:{p_id:op.payload.id,p_qid:op.payload.qid,p_data:op.payload}});
+            removeOutbox(op.opId);
+          }
+          pushed++;
+        }catch(e){
+          const msg=sanitizeSecrets(String(e.message||e)).slice(0,160);
+          // 永久失败只搁置这一条，不算本轮同步失败，否则一条坏数据会让整个题库永久停在退避重试里
+          if(isPermanentPushError(e)){op.stuck=true;op.err=msg;op.stuckAt=Date.now();stuckMsgs.push(msg);continue}
+          errs.push(msg);break
+        }
+      }
+      const stuck=getData().outbox.filter(o=>o.stuck).length;
+      // 游标只认服务器时间（响应 Date 头）；拿不到时退回到本次拉到的最大服务端时间戳，绝不用本机时钟
+      let maxServerTs=0;
+      for(const r of rq){const t=Date.parse(r&&r.updated_at);if(t>maxServerTs)maxServerTs=t}
+      for(const r of ra){const t=Date.parse(r&&r.created_at);if(t>maxServerTs)maxServerTs=t}
+      for(const r of metaRows){const t=Date.parse(r&&r.updated_at);if(t>maxServerTs)maxServerTs=t}
+      const dd=getData();dd.lastPulledAt=serverNow||maxServerTs||d.lastPulledAt;persist();
+      if(errs.length)return{ok:false,reason:'push',pushed,stuck,stuckMsgs,errors:errs,bankMeta};
+      return{ok:true,pushed,stuck,stuckMsgs,pulledQuestions:rq.length,pulledAttempts:ra.length,remoteBanks:Object.values(rbMap),bankMeta,conflicts:getData().conflicts.length}
+    }
+  }
+}
+// ---- 多题库：每个题库一个独立存储槽 ----
+const BANK_SCHEMA=1,DEFAULT_BANK_NAME='默认题库';
+function bankSlotKey(id){return 'travelQuiz_bank_'+String(id)+'_v2'}
+function bankSnapshotKey(id){return 'travelQuiz_snapshot_'+String(id)+'_v1'}
+function bankNameKey(name){return canonical(name)}
+function normalizeBankEntry(raw){
+  if(!raw||typeof raw!=='object')return null;
+  if(typeof raw.id!=='string'||!raw.id)return null;
+  const name=String(raw.name||'').trim()||'未命名题库';
+  const e={id:raw.id,name,createdAt:raw.createdAt||nowIso(),updatedAt:raw.updatedAt||raw.createdAt||nowIso()};
+  if(typeof raw.metaId==='string'&&raw.metaId)e.metaId=raw.metaId;
+  const mv=Number(raw.metaVersion);
+  if(Number.isFinite(mv)&&mv>0)e.metaVersion=mv;
+  if(raw.remoteDeleted===true)e.remoteDeleted=true;
+  return e
+}
+function normalizeRegistry(raw){
+  const out={schema:BANK_SCHEMA,banks:[],activeBankId:''};
+  if(!raw||typeof raw!=='object')return out;
+  const seen=new Set();
+  for(const b of Array.isArray(raw.banks)?raw.banks:[]){const e=normalizeBankEntry(b);if(e&&!seen.has(e.id)){seen.add(e.id);out.banks.push(e)}}
+  const act=typeof raw.activeBankId==='string'?raw.activeBankId:'';
+  out.activeBankId=out.banks.some(b=>b.id===act)?act:(out.banks.length?out.banks[0].id:'');
+  return out
+}
+function uniqueBankName(reg,name){
+  const base=String(name||'').trim()||'未命名题库';
+  const taken=new Set(reg.banks.map(b=>bankNameKey(b.name)));
+  if(!taken.has(bankNameKey(base)))return base;
+  let i=2;while(taken.has(bankNameKey(base+' '+i)))i++;
+  return base+' '+i
+}
+function addBankToRegistry(reg,name,now){
+  now=now||nowIso;
+  const entry={id:makeId(),name:uniqueBankName(reg,name),createdAt:now(),updatedAt:now()};
+  return{registry:{schema:BANK_SCHEMA,banks:reg.banks.concat([entry]),activeBankId:entry.id},bank:entry}
+}
+function renameBankInRegistry(reg,id,name,now){
+  now=now||nowIso;
+  return{...reg,banks:reg.banks.map(b=>b.id===id?{...b,name:uniqueBankName({...reg,banks:reg.banks.filter(x=>x.id!==id)},name),updatedAt:now()}:b)}
+}
+function removeBankFromRegistry(reg,id){
+  const banks=reg.banks.filter(b=>b.id!==id);
+  return{...reg,banks,activeBankId:reg.activeBankId===id?(banks.length?banks[0].id:''):reg.activeBankId}
+}
+// 跨设备题库对齐：空库按题库名（或唯一远端库）认领云端标识；本机有题时只认同名云端库（走合并）
+function planBankAlignment(remoteBanks,localId,localName,localCount,localIds){
+  if(!Array.isArray(remoteBanks)||!remoteBanks.length||!localId)return null;
+  const ids=Array.isArray(localIds)&&localIds.length?localIds:[localId];
+  if(remoteBanks.some(b=>b.tag===localId))return null;
+  const key=canonical(localName||'');
+  const named=key?remoteBanks.filter(b=>!ids.includes(b.tag)&&b.name&&canonical(b.name)===key):[];
+  // 两端都可能有题时只让标识较大的一方向较小一方合并，避免两台设备同时吞并对方
+  if(Number(localCount)>0)return named.length===1&&String(named[0].tag)<String(localId)?named[0].tag:null;
+  if(named.length===1)return named[0].tag;
+  if(!named.length&&remoteBanks.length===1&&ids.length===1)return remoteBanks[0].tag;
+  return null
+}
+// ---- 题库元数据（改名/删除跨设备传播）：复用 questions 表的特殊行，不新增 SQL ----
+const BANK_META_KIND='bank-meta';
+function isBankMetaRow(r){return !!(r&&r.data&&r.data.kind===BANK_META_KIND)}
+function bankMetaFromRow(r){const d=r.data||{};return{metaId:r.id,tag:String(d.bank||''),name:String(d.bankName||''),updatedAt:String(d.bankUpdatedAt||''),deleted:!!r.deleted,version:Number(r.version)||1}}
+function normalizeBankMetaQueue(raw){
+  const out={schema:1,ops:[]};
+  if(!raw||typeof raw!=='object'||!Array.isArray(raw.ops))return out;
+  const seen=new Set();
+  for(const o of raw.ops){
+    if(!o||typeof o!=='object'||!o.opId||!o.metaId||!o.bankId||seen.has(o.bankId))continue;
+    seen.add(o.bankId);
+    out.ops.push({opId:String(o.opId),metaId:String(o.metaId),bankId:String(o.bankId),bankName:String(o.bankName||''),bankUpdatedAt:String(o.bankUpdatedAt||''),baseVersion:Number(o.baseVersion)||0,deleted:!!o.deleted})
+  }
+  return out
+}
+function upsertBankMetaOp(q,op){return{schema:1,ops:(q.ops||[]).filter(o=>o.bankId!==op.bankId).concat([op])}}
+function removeBankMetaOp(q,opId){return{schema:1,ops:(q.ops||[]).filter(o=>o.opId!==opId)}}
+// 把远端元数据应用到本地注册表：版本更新的生效；删除时若有未同步修改则保留并暂停该库
+function applyBankMetaToRegistry(reg,meta,opts){
+  opts=opts||{};
+  if(!meta||!meta.tag)return{registry:reg,action:'none'};
+  const b=reg.banks.find(x=>x.id===meta.tag);
+  if(!b)return{registry:reg,action:'none'};
+  const ver=Number(meta.version)||1;
+  const curVer=Number(b.metaVersion)||0;
+  if(ver<curVer)return{registry:reg,action:'none'};
+  const mid=String(meta.metaId||'');
+  // 多台设备可能各自建过同库元数据行：同版本时统一采用 id 最小的一行，删除指令优先
+  if(ver===curVer&&!meta.deleted){
+    if(b.metaId&&mid&&mid>=b.metaId)return{registry:reg,action:'none'}
+  }
+  if(meta.deleted){
+    if(ver===curVer&&b.remoteDeleted)return{registry:reg,action:'none'};
+    if(opts.hasPending){
+      const banks=reg.banks.map(x=>x.id===b.id?{...x,metaId:meta.metaId||x.metaId,metaVersion:ver,remoteDeleted:true}:x);
+      return{registry:{...reg,banks},action:'keep',bank:{...b}}
+    }
+    return{registry:removeBankFromRegistry(reg,b.id),action:'delete',bank:{...b}}
+  }
+  const name=String(meta.name||'').trim();
+  const renamed=!!name&&canonical(name)!==canonical(b.name);
+  const banks=reg.banks.map(x=>x.id===b.id?{...x,metaId:meta.metaId||x.metaId,metaVersion:ver,remoteDeleted:false,...(renamed?{name,updatedAt:meta.updatedAt||x.updatedAt}:{})}:x);
+  return{registry:{...reg,banks},action:renamed?'rename':'sync',bank:{...b}}
+}
+// 合并后的去重计划：本机题与云端题按题干配对，配上的保留云端题、删除本机副本并迁移核对记录
+function planBankMerge(questions,localIds){
+  const ids=new Set(localIds||[]);
+  const remoteByStem=new Map();
+  for(const q of questions){
+    if(ids.has(q.id)||q.deleted)continue;
+    const k=stemKey(q.stem);
+    if(k&&!remoteByStem.has(k))remoteByStem.set(k,q)
+  }
+  const remove=[],remap={},keep=[],pairs=[];
+  for(const q of questions){
+    if(!ids.has(q.id))continue;
+    const r=q.deleted?null:remoteByStem.get(stemKey(q.stem));
+    if(r&&r.id!==q.id){remove.push(q.id);remap[q.id]=r.id;pairs.push({localId:q.id,remoteId:r.id})}
+    else keep.push(q.id)
+  }
+  return{remove,remap,keep,pairs}
+}
+function makeBankData(id){const d=emptyData();d.bankId=id;return d}
+function migrateLegacyToBanks(v2,v1,now){
+  now=now||nowIso;
+  const entry={id:makeId(),name:DEFAULT_BANK_NAME,createdAt:now(),updatedAt:now()};
+  const hasV2=!!(v2&&typeof v2==='object'&&v2.schema===SCHEMA_VERSION);
+  const hasV1=!!(v1&&typeof v1==='object');
+  let data,source='empty';
+  if(hasV2){data={...makeBankData(entry.id),...v2};data.bankId=entry.id;source='v2'}
+  else if(hasV1){data=migrateV1(v1);data.bankId=entry.id;source='v1'}
+  else data=makeBankData(entry.id);
+  data.schema=SCHEMA_VERSION;
+  migrateWrongResolved(data);
+  return{registry:{schema:BANK_SCHEMA,banks:[entry],activeBankId:entry.id},bankId:entry.id,data,source}
+}
+function buildBanksBundle(banks){
+  return{schema:3,kind:'multi-bank',exportedAt:nowIso(),banks:banks.map(b=>({id:b.id,name:b.name,createdAt:b.createdAt,data:JSON.parse(JSON.stringify(b.data))}))}
+}
+function checkBankPayload(x,label){
+  const tag=label?label+'：':'';
+  if(!x||typeof x!=='object')return{ok:false,reason:tag+'备份内容不是对象'};
+  if(!Array.isArray(x.questions)||!Array.isArray(x.attempts))return{ok:false,reason:tag+'备份文件缺少 questions/attempts 字段'};
+  const bad=x.questions.filter(q=>!q||typeof q!=='object'||(!q.stem&&q.deleted!==true));
+  if(bad.length)return{ok:false,reason:tag+'有 '+bad.length+' 条题目记录无效'};
+  for(let i=0;i<x.attempts.length;i++){if(!x.attempts[i]||!x.attempts[i].qid)return{ok:false,reason:tag+'第 '+(i+1)+' 条作答记录无效'}}
+  return{ok:true,total:x.questions.length,attempts:x.attempts.length}
+}
+function classifyBackup(j){
+  if(!j||typeof j!=='object')return{ok:false,reason:'文件不是有效的 JSON 对象'};
+  if(j.kind==='multi-bank'||Array.isArray(j.banks)){
+    if(!Array.isArray(j.banks)||!j.banks.length)return{ok:false,reason:'多题库备份中没有题库记录'};
+    for(let i=0;i<j.banks.length;i++){
+      const b=j.banks[i];
+      if(!b||typeof b!=='object')return{ok:false,reason:'第 '+(i+1)+' 个题库记录无效'};
+      const r=checkBankPayload(b.data,String(b.name||'未命名题库'));
+      if(!r.ok)return{ok:false,reason:'第 '+(i+1)+' 个题库：'+r.reason}
+    }
+    return{ok:true,kind:'bundle',bundle:j}
+  }
+  const r=checkBankPayload(j);
+  if(!r.ok)return{ok:false,reason:r.reason};
+  return{ok:true,kind:'bank',data:j}
+}
+function applyBundleRestore(reg,bundle,now){
+  now=now||nowIso;
+  const registry={schema:BANK_SCHEMA,banks:reg.banks.map(b=>({...b})),activeBankId:reg.activeBankId};
+  const writes=[];let created=0,overwritten=0;
+  for(const b of bundle.banks){
+    const name=String(b.name||'').trim()||'未命名题库';
+    const match=registry.banks.find(x=>bankNameKey(x.name)===bankNameKey(name));
+    let entry;
+    if(match){entry={...match,updatedAt:now()};registry.banks[registry.banks.findIndex(x=>x.id===match.id)]=entry;overwritten++}
+    else{entry={id:makeId(),name,createdAt:now(),updatedAt:now()};registry.banks.push(entry);created++}
+    const d={...makeBankData(entry.id),...JSON.parse(JSON.stringify(b.data))};
+    d.bankId=entry.id;d.schema=SCHEMA_VERSION;
+    writes.push({id:entry.id,data:d})
+  }
+  if(!registry.banks.some(b=>b.id===registry.activeBankId))registry.activeBankId=registry.banks.length?registry.banks[0].id:'';
+  return{registry,writes,created,overwritten}
+}
+const CORE_EXPORTS={makeId,nowIso,SCHEMA_VERSION,emptyData,canonical,normType,isLegacyChoice,normalizeOptions,normalizeQuestion,migrateV1,migrateWrongResolved,activeQuestions,getQ,attemptsFor,isWrong,wrongCountFor,computeStats,validateQuestionsInput,mergeQuestions,checkAnswer,splitChunks,detectScannedPdf,buildChatEndpoint,sanitizeSecrets,classifyApiError,backoffDelay,isPermanentPushError,qCloud,qFromCloud,applyRemoteChanges,createSyncEngine,BANK_SCHEMA,DEFAULT_BANK_NAME,bankSlotKey,bankSnapshotKey,normalizeRegistry,uniqueBankName,addBankToRegistry,renameBankInRegistry,removeBankFromRegistry,planBankAlignment,BANK_META_KIND,isBankMetaRow,bankMetaFromRow,normalizeBankMetaQueue,upsertBankMetaOp,removeBankMetaOp,applyBankMetaToRegistry,planBankMerge,makeBankData,migrateLegacyToBanks,buildBanksBundle,classifyBackup,applyBundleRestore};
+//</CORE-END>
+
+const $=id=>document.getElementById(id);
+const LS='travelQuiz_v2',LS1='travelQuiz_v1',CFG='travelQuiz_cfg_v2',AUTH='travelQuiz_sb_auth_v1',BANKS='travelQuiz_banks_v1',LEGACY_SNAP='travelQuiz_snapshot_v1',BANKMETA='travelQuiz_bank_meta_ops_v1',MERGEDECLINE='travelQuiz_merge_dismissed_v1';
+function loadRegistry(){try{return normalizeRegistry(JSON.parse(localStorage.getItem(BANKS)||'null'))}catch(e){return normalizeRegistry(null)}}
+let storeFailed=false;
+function storeBanner(on){
+  storeFailed=!!on;
+  if(on){
+    if($('storeBanner'))return;
+    const b=document.createElement('div');b.id='storeBanner';b.className='storebanner';
+    b.innerHTML='<span><b>本机存储写入失败</b>（浏览器存储空间可能已满）改动只在当前页面有效，刷新会丢失，请立刻导出备份。</span><button class="secondary" id="storeBannerOff">知道了</button>';
+    document.body.appendChild(b);
+    $('storeBannerOff').onclick=()=>{const x=$('storeBanner');if(x)x.remove();storeFailed=false}
+  }else{const x=$('storeBanner');if(x)x.remove()}
+}
+function writeStore(key,val,quiet){
+  try{localStorage.setItem(key,val);if(storeFailed)storeBanner(false);return true}catch(e){
+    // 提示必须比 toast 更持久：多数操作紧接着就弹自己的成功提示，会把一次性警告顶掉
+    if(!quiet)storeBanner(true);
+    return false
+  }
+}
+function saveRegistry(){writeStore(BANKS,JSON.stringify(registry))}
+function activeBank(){return registry.banks.find(b=>b.id===registry.activeBankId)||null}
+function slot(){return bankSlotKey(registry.activeBankId)}
+function snapKey(){return bankSnapshotKey(registry.activeBankId)}
+function readBankSlot(id){
+  try{const j=JSON.parse(localStorage.getItem(bankSlotKey(id))||'null');if(j&&j.schema===SCHEMA_VERSION){const d={...makeBankData(id),...j};d.bankId=id;d.schema=SCHEMA_VERSION;return migrateWrongResolved(d)}}catch(e){}
+  return makeBankData(id)
+}
+function bootState(){
+  if(registry.banks.length)return{registry,data:readBankSlot(registry.activeBankId),migrated:null}
+  let v2=null,v1=null;
+  try{v2=JSON.parse(localStorage.getItem(LS)||'null')}catch(e){}
+  try{v1=JSON.parse(localStorage.getItem(LS1)||'null')}catch(e){}
+  const m=migrateLegacyToBanks(v2,v1);
+  try{writeStore(bankSlotKey(m.bankId),JSON.stringify(m.data),true);const oldSnap=localStorage.getItem(LEGACY_SNAP);if(oldSnap)writeStore(bankSnapshotKey(m.bankId),oldSnap,true)}catch(e){}
+  return{registry:m.registry,data:m.data,migrated:m.source}
+}
+let registry=loadRegistry();
+const boot=bootState();registry=boot.registry;saveRegistry();
+let data=boot.data,cfg=loadCfg(),auth=loadAuth(),currentIds=[],currentIndex=0,currentQuestionId=null,editId=null,busy=false,pendingGen=[],lastSyncOk=0,syncFailCount=0,syncTimer=null,pollTimer=null;
+function loadCfg(){try{return JSON.parse(localStorage.getItem(CFG)||'{}')}catch(e){return{}}}
+function loadAuth(){try{return JSON.parse(localStorage.getItem(AUTH)||'null')}catch(e){return null}}
+let batchDepth=0,batchDirty=false;
+function persistBank(){writeStore(slot(),JSON.stringify(data));renderAll()}
+function saveLocal(){if(batchDepth>0){batchDirty=true;return}persistBank()}
+function saveCfg(){writeStore(CFG,JSON.stringify(cfg))}
+function getData(){return data}function setData(d){data=d}
+// 批量改动（导入、清空错题、题库合并）时把 N 次「整份序列化 + 全量重渲染」压成一次
+function batch(fn){batchDepth++;try{fn()}finally{batchDepth--;if(batchDepth===0&&batchDirty){batchDirty=false;persistBank()}}}
+function toast(msg){$('toast').textContent=String(msg).slice(0,300);$('toast').classList.remove('hidden');clearTimeout(toast._t);toast._t=setTimeout(()=>$('toast').classList.add('hidden'),3600)}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function setSyncStatus(label,kind=''){$('syncLabel').textContent=label;$('syncDot').className='dot '+kind}
+function setAuthStatus(t){$('authStatus').textContent=t}
+function updateSyncDetail(){
+  const stuckN=engine.stuckCount();
+  const pend=engine.pushableCount()+loadBankMetaQueue().ops.length;
+  let extra='';
+  if(stuckN)extra+='　·　'+stuckN+' 条被服务器拒绝已搁置';
+  if(lastSyncOk)extra+='　·　最近成功：'+new Date(lastSyncOk).toLocaleTimeString();
+  if(syncFailCount>0)extra+='　·　连续失败 '+syncFailCount+' 次（退避重试中）';
+  const b=activeBank();if(b&&b.remoteDeleted)extra+='　·　本题库已被其他设备删除，同步暂停';
+  $('syncDetail').textContent='待同步操作：'+pend+extra;
+  renderStuck()
+}
+function renderStuck(){
+  const ops=engine.stuckOps();
+  $('stuckBox').innerHTML=ops.length?`<div class="errbox"><b>${ops.length} 条操作被服务器拒绝，已搁置</b><div class="small muted">这些数据不会同步到云端，本机仍保留；其余数据的同步不受影响。重新编辑对应题目会自动重试。</div>${ops.slice(0,8).map(o=>`<div class="small">${esc(o.kind==='q'?'题目':'核对记录')} ${esc(String(o.entityId).slice(0,8))}…：${esc(o.err||'未知原因')}</div>`).join('')}${ops.length>8?'<div class="small">……</div>':''}<div class="row" style="margin-top:6px"><button class="secondary" id="retryStuck">重试全部</button><button class="secondary" id="dropStuck">全部丢弃</button></div></div>`:'';
+  const r=$('retryStuck');
+  if(r)r.onclick=()=>{const n=engine.retryStuck();toast('已把 '+n+' 条搁置操作重新加入上传队列');doSync(true)};
+  const d=$('dropStuck');
+  if(d)d.onclick=()=>{
+    const list=engine.stuckOps();
+    if(!confirm('丢弃 '+list.length+' 条无法上传的操作？这些改动不会同步到云端（本机数据保留）。'))return;
+    batch(()=>list.forEach(o=>engine.dropStuck(o.opId)));
+    toast('已丢弃搁置的操作')
+  };
+}
+// ---- Supabase 传输层（仅在已登录时使用；错误信息一律脱敏） ----
+function sbBase(){return String(cfg.sbUrl||'').replace(/\/+$/,'')}
+function sbHeaders(extra={},useAuth=true){
+  if(!cfg.sbKey)throw Error('请填写 Supabase anon/publishable key');
+  if(useAuth&&!(auth&&auth.access_token))throw Error('未登录，不会向服务器发送请求');
+  return{apikey:cfg.sbKey,Authorization:'Bearer '+((useAuth&&auth&&auth.access_token)||cfg.sbKey),'Content-Type':'application/json',Prefer:'return=representation',...extra}
+}
+async function sbRaw(path,opts={},retried=false){
+  if(opts.body&&typeof opts.body!=='string')opts={...opts,body:JSON.stringify(opts.body)};
+  const r=await fetch(sbBase()+path,{...opts,headers:{...sbHeaders(),...(opts.headers||{})}});
+  const dh=typeof r.headers.get==='function'?r.headers.get('date'):null;
+  if(dh){const v=Date.parse(dh);if(v>0)sbRequest.serverTimeMs=v}
+  const t=await r.text();let j=null;try{j=t?JSON.parse(t):null}catch(e){j=null}
+  if(r.status===401&&!retried&&auth&&auth.refresh_token&&!path.startsWith('/auth/v1/token')){
+    try{const fresh=await fetch(sbBase()+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{apikey:cfg.sbKey,Authorization:'Bearer '+cfg.sbKey,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:auth.refresh_token})});
+      const ft=await fresh.text();let fj=null;try{fj=ft?JSON.parse(ft):null}catch(e){}
+      if(fresh.ok&&fj&&fj.access_token){persistAuth({...fj,user:fj.user||auth.user});return sbRaw(path,opts,true)}
+      throw Error('refresh rejected')
+    }catch(e){persistAuth(null);setSyncStatus('登录已过期','bad');throw Error('登录已过期，请重新登录')}
+  }
+  if(!r.ok){const err=Error(sanitizeSecrets(String((j&&(j.message||j.msg||j.error_description))||t||('请求失败 '+r.status))).slice(0,300));err.status=r.status;throw err}
+  return j
+}
+async function sbRequest(path,opts={}){return sbRaw(path,opts)}
+sbRequest.serverTimeMs=0;
+async function sbAuth(path,opts={}){
+  const r=await fetch(sbBase()+path,{...opts,headers:{apikey:cfg.sbKey,Authorization:'Bearer '+cfg.sbKey,'Content-Type':'application/json',...(opts.headers||{})}});
+  const t=await r.text();let j=null;try{j=t?JSON.parse(t):null}catch(e){}
+  if(!r.ok)throw Error(sanitizeSecrets(String((j&&(j.message||j.error_description))||t||('认证失败 '+r.status))).slice(0,300));
+  return j
+}
+function persistAuth(a){
+  auth=a;if(a)writeStore(AUTH,JSON.stringify(a));else localStorage.removeItem(AUTH);
+  setSyncStatus(a?'待同步':'本机模式',a?'warn':'');
+  setAuthStatus(a?'已登录：'+((a.user&&a.user.email)||'账号'):'未登录');
+  updateSyncDetail();
+  if(a)scheduleSync(200);
+}
+// ---- 同步引擎 ----
+const engine=createSyncEngine({getAuth:()=>auth,request:sbRequest,getData,setData,getBankId:()=>data.bankId,getBankName:()=>currentBankName(),persist:saveLocal,persistQuiet:()=>{writeStore(slot(),JSON.stringify(data))}});
+function adoptRemoteBank(newId,newName){
+  const oldId=registry.activeBankId;
+  if(!oldId||!newId||oldId===newId||registry.banks.some(b=>b.id===newId))return false;
+  const raw=localStorage.getItem(bankSlotKey(oldId));
+  const snap=localStorage.getItem(bankSnapshotKey(oldId));
+  if(raw)writeStore(bankSlotKey(newId),raw);
+  if(snap)writeStore(bankSnapshotKey(newId),snap);
+  localStorage.removeItem(bankSlotKey(oldId));localStorage.removeItem(bankSnapshotKey(oldId));
+  registry={...registry,banks:registry.banks.map(b=>{
+    if(b.id!==oldId)return b;
+    const nb={...b,id:newId,name:newName||b.name,updatedAt:nowIso()};
+    delete nb.metaId;delete nb.metaVersion;delete nb.remoteDeleted;
+    return nb
+  }),activeBankId:newId};
+  saveRegistry();
+  data.bankId=newId;data.lastPulledAt=0;
+  // 未上传的操作改挂到新库标识，避免它们被推到旧库后在新库里看不到
+  for(const o of data.outbox){
+    if(!o.payload||typeof o.payload!=='object')continue;
+    if(o.kind==='q'&&o.payload.data){o.payload.data.bank=newId;if(newName)o.payload.data.bankName=newName}
+    else{o.payload.bank=newId;if(newName)o.payload.bankName=newName}
+  }
+  saveLocal();
+  updateSyncDetail();return true
+}
+// ---- 题库元数据（改名/删除）跨设备传播 ----
+function loadBankMetaQueue(){try{return normalizeBankMetaQueue(JSON.parse(localStorage.getItem(BANKMETA)||'null'))}catch(e){return normalizeBankMetaQueue(null)}}
+function saveBankMetaQueue(q){writeStore(BANKMETA,JSON.stringify(q))}
+function queueBankMeta(b,deleted){
+  if(!b||!b.id)return null;
+  if(!b.metaId)b.metaId=makeId();
+  const op={opId:makeId(),metaId:b.metaId,bankId:b.id,bankName:b.name,bankUpdatedAt:b.updatedAt||nowIso(),baseVersion:Number(b.metaVersion)||0,deleted:!!deleted};
+  saveBankMetaQueue(upsertBankMetaOp(loadBankMetaQueue(),op));
+  saveRegistry();updateSyncDetail();
+  return op
+}
+function ensureBankMeta(){
+  const b=activeBank();if(!b||!auth||!auth.access_token)return;
+  if(Number(b.metaVersion)>0)return;
+  if(loadBankMetaQueue().ops.some(o=>o.bankId===b.id))return;
+  queueBankMeta(b,false)
+}
+async function flushBankMetaOps(){
+  if(!auth||!auth.access_token)return;
+  let q=loadBankMetaQueue();
+  for(const op of [...q.ops]){
+    try{
+      const r=await sbRequest('/rest/v1/rpc/sync_question',{method:'POST',body:{p_id:op.metaId,p_data:{kind:BANK_META_KIND,bank:op.bankId,bankName:op.bankName,bankUpdatedAt:op.bankUpdatedAt},p_base_version:op.baseVersion,p_deleted:!!op.deleted}});
+      if(r&&r.status==='ok'){
+        q=removeBankMetaOp(q,op.opId);saveBankMetaQueue(q);
+        const b=registry.banks.find(x=>x.id===op.bankId);
+        if(b){b.metaId=op.metaId;b.metaVersion=r.version;saveRegistry()}
+        continue
+      }
+      if(r&&r.status==='conflict'){
+        const row=r.row||{};
+        if(op.deleted){
+          const cur=q.ops.find(o=>o.opId===op.opId);
+          if(cur){cur.baseVersion=Number(row.version)||1;saveBankMetaQueue(q)}
+          break
+        }
+        // 改名冲突以服务器（另一台设备）版本为准
+        q=removeBankMetaOp(q,op.opId);saveBankMetaQueue(q);
+        const b=registry.banks.find(x=>x.id===op.bankId);
+        if(b){
+          b.metaId=row.id||op.metaId;b.metaVersion=Number(row.version)||1;
+          if(row.deleted){
+            b.remoteDeleted=true;
+            if(b.id===registry.activeBankId)toast('题库「'+b.name+'」已在另一台设备删除：本机修改已保留，再次点“立即同步”可选择删除本机副本')
+          }else{
+            const rn=String((row.data&&row.data.bankName)||'').trim();
+            if(rn)b.name=rn
+          }
+          saveRegistry();
+          if(b.id===registry.activeBankId)renderAll()
+        }
+        continue
+      }
+      break
+    }catch(e){break}
+  }
+  updateSyncDetail()
+}
+function applyIncomingBankMeta(list){
+  if(!Array.isArray(list)||!list.length)return false;
+  let changed=false,activeGone=false;
+  for(const m of list){
+    const b=registry.banks.find(x=>x.id===m.tag);
+    if(!b)continue;
+    const slotData=b.id===registry.activeBankId?data:readBankSlot(b.id);
+    const hasPending=Array.isArray(slotData.outbox)&&slotData.outbox.length>0;
+    const wasActive=b.id===registry.activeBankId;
+    const r=applyBankMetaToRegistry(registry,m,{hasPending});
+    if(r.action==='none')continue;
+    registry=r.registry;changed=true;
+    if(r.action==='delete'){
+      localStorage.removeItem(bankSlotKey(b.id));localStorage.removeItem(bankSnapshotKey(b.id));
+      saveBankMetaQueue({schema:1,ops:loadBankMetaQueue().ops.filter(o=>o.bankId!==b.id)});
+      if(wasActive)activeGone=true;
+      toast('题库「'+b.name+'」已在另一台设备删除，本机副本已移除');
+    }else if(r.action==='keep'){
+      toast('题库「'+b.name+'」已在另一台设备删除，但本机还有未同步的修改：已保留并暂停该库同步');
+    }else if(r.action==='rename'){
+      const nb=registry.banks.find(x=>x.id===b.id);
+      toast('题库已按另一台设备重命名为「'+((nb&&nb.name)||b.name)+'」');
+    }
+  }
+  if(!changed)return false;
+  if(!registry.banks.length){
+    const r=addBankToRegistry(normalizeRegistry(null),DEFAULT_BANK_NAME);registry=r.registry;
+    data=makeBankData(r.bank.id);
+    writeStore(bankSlotKey(r.bank.id),JSON.stringify(data));
+  }
+  if(activeGone||!registry.banks.some(b=>b.id===registry.activeBankId)){
+    registry={...registry,activeBankId:registry.banks[0].id};
+    data=readBankSlot(registry.activeBankId);
+    currentIndex=0;currentQuestionId=null;
+  }
+  saveRegistry();saveLocal();updateBankUI();
+  return activeGone
+}
+function deleteLocalBank(id,opts){
+  opts=opts||{};
+  const b=registry.banks.find(x=>x.id===id);
+  if(!b)return false;
+  if(opts.queueTombstone&&!b.remoteDeleted)queueBankMeta(b,true);
+  else saveBankMetaQueue({schema:1,ops:loadBankMetaQueue().ops.filter(o=>o.bankId!==id)});
+  localStorage.removeItem(bankSlotKey(id));localStorage.removeItem(bankSnapshotKey(id));
+  registry=removeBankFromRegistry(normalizeRegistry(registry),id);saveRegistry();
+  if(!registry.banks.length){
+    const r=addBankToRegistry(normalizeRegistry(null),DEFAULT_BANK_NAME);
+    registry=r.registry;saveRegistry();
+    data=makeBankData(r.bank.id);
+    writeStore(bankSlotKey(r.bank.id),JSON.stringify(data));
+  }else if(id===data.bankId){
+    data=readBankSlot(registry.activeBankId);
+  }
+  currentIndex=0;currentQuestionId=null;saveLocal();resetStudy();
+  return true
+}
+// 合并到云端同名题库：采用云端标识，本机题按题干去重后并入，核对记录随题迁移
+async function mergeIntoBank(tag,name){
+  const old=activeBank();
+  setSyncStatus('合并中……','warn');
+  // 先把本题库云端最新内容拉全：旧库随后会被标记删除，漏拉会丢掉其他设备后加的题
+  data.lastPulledAt=0;saveLocal();
+  let pre=null;
+  try{pre=await engine.syncOnce()}catch(e){pre={ok:false}}
+  if(!pre||!pre.ok){toast('合并前拉取本题库失败，已取消合并，稍后重试');updateSyncDetail();scheduleSync();return}
+  const localIds=data.questions.map(q=>q.id);
+  const total=data.questions.filter(q=>!q.deleted).length;
+  if(!adoptRemoteBank(tag,name)){toast('合并失败：题库标识已被占用');return}
+  if(old)queueBankMeta(old,true);
+  await flushBankMetaOps();
+  data.outbox=data.outbox.filter(o=>o.kind!=='q').map(o=>{
+    if(o.kind==='attempt'&&o.payload){o.payload.bank=registry.activeBankId;if(name)o.payload.bankName=name}
+    return o
+  });
+  data.lastPulledAt=0;saveLocal();
+  let r=null;
+  try{r=await engine.syncOnce()}catch(e){r={ok:false}}
+  if(!r||!r.ok){toast('合并已准备，但拉取云端题库失败，稍后重试');updateSyncDetail();scheduleSync();return}
+  const plan=planBankMerge(data.questions,localIds);
+  const byId=new Map(data.questions.map(q=>[q.id,q]));
+  batch(()=>{
+  for(const p of plan.pairs){
+    const L=byId.get(p.localId),R=byId.get(p.remoteId);
+    if(!L||!R)continue;
+    const f0=!!R.favorite,v0=!!R.reviewMark,r0=Number(R.resolvedAt)||0,u0=String(R.updatedAt||'');
+    R.favorite=!!(R.favorite||L.favorite);R.reviewMark=!!(R.reviewMark||L.reviewMark);
+    R.resolvedAt=Math.max(r0,Number(L.resolvedAt)||0);
+    if(String(L.updatedAt||'')>u0){
+      ['type','stem','answer','explanation','tags','source','difficulty'].forEach(k=>{R[k]=L[k]});
+      R.updatedAt=L.updatedAt
+    }
+    if(!!R.favorite!==f0||!!R.reviewMark!==v0||R.resolvedAt!==r0||String(R.updatedAt||'')!==u0)engine.enqueueQuestion(R)
+  }
+  const removed=new Set(plan.remove);
+  data.questions=data.questions.filter(q=>!removed.has(q.id));
+  data.outbox=data.outbox.filter(o=>!(o.kind==='q'&&removed.has(o.entityId)));
+  for(const [oldId,newId] of Object.entries(plan.remap)){
+    for(const a of data.attempts)if(a.qid===oldId)a.qid=newId;
+  }
+  for(const id of plan.keep){const q=byId.get(id);if(!q)continue;if(q.deleted)engine.enqueueDelete(q);else engine.enqueueQuestion(q)}
+  for(const id of plan.remove){const q=byId.get(id);if(q)engine.enqueueDelete(q)}
+  saveLocal();
+  });
+  const pushed=await engine.syncOnce();
+  toast(`已合并到云端同名题库：本机 ${total} 道，按题干去重 ${plan.remove.length} 道${pushed&&pushed.ok?'':'（上传稍后重试）'}`);
+  if(pushed&&pushed.ok)lastSyncOk=Date.now();
+  updateSyncDetail();renderAll();scheduleSync();
+}
+function loadMergeDeclined(){try{const a=JSON.parse(localStorage.getItem(MERGEDECLINE)||'[]');return Array.isArray(a)?a.filter(x=>typeof x==='string'):[]}catch(e){return[]}}
+function saveMergeDeclined(set){writeStore(MERGEDECLINE,JSON.stringify([...set].slice(-50)),true)}
+const bootstrapDone=new Set();const mergeDeclined=new Set(loadMergeDeclined());let introFullPull=true;
+async function doSync(manual){
+  if(!cfg.sbUrl||!cfg.sbKey||!auth||!auth.access_token){if(manual)toast('尚未登录 Supabase，数据保存在本机');return}
+  const ab=activeBank();
+  if(ab&&ab.remoteDeleted){
+    setSyncStatus('本题库已被其他设备删除','bad');
+    if(manual&&confirm(`题库「${ab.name}」已在另一台设备删除。\n本机还保留着它（含未同步的修改）。是否同时删除本机副本？\n取消则继续暂停该题库的同步。`)){
+      deleteLocalBank(ab.id);
+      return doSync(true)
+    }
+    updateSyncDetail();return
+  }
+  setSyncStatus('同步中……','warn');
+  // 手动同步和每次打开页面后的第一次同步都全量拉一次，才能发现同名不同标识的云端题库并合并
+  const forceFull=!!(manual||introFullPull);
+  const wasFullPull=forceFull||!data.lastPulledAt;
+  try{
+    ensureBankMeta();
+    await flushBankMetaOps();
+    if(activeBank()&&activeBank().remoteDeleted){setSyncStatus('本题库已被其他设备删除','bad');updateSyncDetail();return}
+    const res=await engine.syncOnce({fullPull:forceFull});
+    if(res.ok){introFullPull=false;lastSyncOk=Date.now();syncFailCount=0;setSyncStatus('已同步','ok');setAuthStatus('已登录，最近同步：'+new Date().toLocaleTimeString());if(manual&&res.stuck)toast('同步完成，但有 '+res.stuck+' 条操作被服务器拒绝已搁置，请在设置里查看')}
+    else if(res.reason==='auth'){setSyncStatus('未登录','');return}
+    else{syncFailCount++;setSyncStatus('同步失败（重试中）','bad');setAuthStatus('同步失败：'+(res.error||(res.errors||[]).join('；')));if(manual)toast('同步失败：'+(res.error||(res.errors||[]).join('；')))}
+    if(res.bankMeta&&res.bankMeta.length&&applyIncomingBankMeta(res.bankMeta)){
+      return doSync(manual)
+    }
+    const bid=registry.activeBankId;
+    if(res.ok&&wasFullPull&&Array.isArray(res.remoteBanks)){
+      const live=data.questions.filter(q=>!q.deleted).length;
+      const tag=planBankAlignment(res.remoteBanks,bid,currentBankName(),live,registry.banks.map(b=>b.id));
+      if(tag){
+        const rb=res.remoteBanks.find(b=>b.tag===tag);
+        if(!live){
+          if(adoptRemoteBank(tag,rb&&rb.name)){toast('已按题库名对齐云端，正在拉取题目');return doSync(manual)}
+        }else if(!mergeDeclined.has(bid+'|'+tag)){
+          const ok=confirm(`云端已有一个同名题库「${currentBankName()}」（来自另一台设备，${rb?rb.count:0} 道题）。\n是否把本机本题库的 ${live} 道题合并进去？\n合并按题干自动去重，核对记录随题保留。`);
+          if(ok)return mergeIntoBank(tag,rb&&rb.name);
+          mergeDeclined.add(bid+'|'+tag);saveMergeDeclined(mergeDeclined)
+        }
+      }
+    }
+    if(res.ok&&wasFullPull&&!res.pulledQuestions&&!bootstrapDone.has(bid)&&data.questions.length&&!res.remoteBanks.some(b=>!registry.banks.some(x=>x.id===b.tag))){
+      bootstrapDone.add(bid);
+      data.outbox=[...buildReuploadOps(data,bid),...data.outbox.filter(o=>o.kind==='attempt')];
+      saveLocal();toast('云端本题库为空，已把本机全部题目加入上传队列');
+      return doSync(manual)
+    }
+  }catch(e){syncFailCount++;setSyncStatus('同步失败（重试中）','bad');if(manual)toast('同步失败：'+sanitizeSecrets(e.message))}
+  updateSyncDetail();renderConflicts();scheduleSync();
+}
+function scheduleSync(delay){
+  clearTimeout(syncTimer);
+  if(!auth||!auth.access_token)return;
+  const wait=syncFailCount>0?backoffDelay(syncFailCount):delay||2500;
+  syncTimer=setTimeout(()=>doSync(false),wait);
+  startPolling()
+}
+function startPolling(){
+  if(pollTimer)return;
+  pollTimer=setInterval(()=>{if(!document.hidden&&auth&&auth.access_token&&engine.pushableCount()===0)doSync(false);else if(document.hidden&&syncFailCount>3){clearInterval(pollTimer);pollTimer=null}},45000)
+}
+window.addEventListener('online',()=>{if(auth&&auth.access_token)doSync(false)});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&auth&&auth.access_token)doSync(false)});
+window.addEventListener('beforeunload',()=>{writeStore(slot(),JSON.stringify(data),true)});
+// ---- 本地变更入口（全部进入 outbox） ----
+function touchQuestion(q){q.updatedAt=nowIso()}
+function saveQuestionLocal(q,isNew){if(isNew)data.questions.push(q);touchQuestion(q);saveLocal();engine.enqueueQuestion(q);scheduleSync()}
+function askDeleteQuestion(q){
+  return new Promise(resolve=>{
+    $('confirmDeleteStem').textContent=q.stem.slice(0,180)+(q.stem.length>180?'…':'');
+    $('confirmDeleteModal').classList.remove('hidden');
+    const finish=ok=>{$('confirmDeleteModal').classList.add('hidden');$('confirmDelete').onclick=null;$('cancelDelete').onclick=null;resolve(ok)};
+    $('confirmDelete').onclick=()=>finish(true);
+    $('cancelDelete').onclick=()=>finish(false);
+    requestAnimationFrame(()=>$('cancelDelete').focus())
+  })
+}
+async function deleteQuestionLocal(id){
+  const q=getQ(data,id);if(!q)return false;
+  if(!await askDeleteQuestion(q))return false;
+  q.deleted=true;touchQuestion(q);saveLocal();engine.enqueueQuestion({...q});scheduleSync();toast('题目已删除');return true
+}
+function recordAttempt(q,answer,correct,selfRated){
+  const a={id:makeId(),qid:q.id,answer,correct,time:Date.now(),source:'local',selfRated:selfRated??null};
+  data.attempts.push(a);return a
+}
+// ---- 视图与渲染 ----
+function switchView(v){document.querySelectorAll('.view').forEach(el=>el.classList.toggle('hidden',el.id!=='view-'+v));document.querySelectorAll('.tab').forEach(el=>el.classList.toggle('active',el.dataset.view===v));if(v==='wrong')renderWrong();if(v==='bank')renderBank();if(v==='stats')renderStats();if(v==='study')resetStudy()}
+function filteredQuestions(){
+  const type=$('filterType').value,diff=$('filterDiff').value,state=$('filterState').value,tag=$('filterTag').value.trim().toLowerCase();
+  return activeQuestions(data).filter(q=>{
+    if(type!=='all'&&q.type!==type)return false;
+    if(diff!=='all'&&q.difficulty!==diff)return false;
+    if(state==='wrong'&&!isWrong(data,q.id))return false;
+    if(state==='favorite'&&!q.favorite)return false;
+    if(state==='review'&&!q.reviewMark)return false;
+    if(tag&&!(q.tags+' '+q.source+' '+q.stem).toLowerCase().includes(tag))return false;
+    return true
+  })
+}
+function resetStudy(){
+  let qs=filteredQuestions(),mode=$('studyMode').value;
+  if(mode==='wrong')qs=qs.filter(q=>isWrong(data,q.id));
+  if(mode==='favorite')qs=qs.filter(q=>q.favorite);
+  if(mode==='review')qs=qs.filter(q=>q.reviewMark);
+  if(mode==='random')qs=qs.slice().sort(()=>Math.random()-.5);
+  currentIds=qs.map(q=>q.id);if(currentIndex>=currentIds.length)currentIndex=0;renderQuestion()
+}
+function renderQuestion(){
+  const q=getQ(data,currentIds[currentIndex]);currentQuestionId=q?q.id:null;
+  $('feedbackArea').innerHTML='';$('answerArea').innerHTML='';
+  $('studyCard').classList.toggle('empty',!q);
+  $('showAns').disabled=!q;$('prevQ').disabled=!q||currentIndex<=0;$('nextQ').disabled=!q||currentIds.length<2;
+  $('btnFav').disabled=!q;$('btnReview').disabled=!q;$('btnDelete').disabled=!q;
+  $('btnFav').classList.toggle('on',!!(q&&q.favorite));$('btnReview').classList.toggle('on',!!(q&&q.reviewMark));
+  $('btnFav').textContent=q&&q.favorite?'★ 已收藏':'☆ 收藏本题';$('btnReview').textContent=q&&q.reviewMark?'🔖 已标记待复习':'🔖 标记待复习';
+  $('qType').textContent=q?typeName(q.type):'暂无题目';$('qSource').textContent=q?(q.source||q.tags||'未分类'):'题库为空';
+  $('qCounter').textContent=q?`${currentIndex+1} / ${currentIds.length}`:'';
+  $('studyBar').style.width=currentIds.length?`${(currentIndex+1)/currentIds.length*100}%`:'0%';
+  if(!q){$('qStem').textContent=activeQuestions(data).length?'当前筛选下没有题目。请更改筛选条件。':'请先导入题库，或进入“AI 出题”生成题目。';$('studySubtitle').textContent='从题库中选择一道题开始。';return}
+  $('qStem').textContent=q.stem;
+  $('studySubtitle').textContent=`${q.difficulty||'中等'}${q.tags?' · '+q.tags:''}${q.favorite?' · ★ 已收藏':''}${q.reviewMark?' · 🔖 待复习':''}`;
+  $('answerArea').innerHTML='<div class="thinkhint">先自己思考答案，再点击下方“显示答案与解析”核对。</div>';
+}
+function typeName(t){return t==='fill'?'填空题':'简答题'}
+function showAnswer(){
+  const q=getQ(data,currentQuestionId);if(!q)return;
+  const wrong=isWrong(data,q.id);
+  $('answerArea').innerHTML='';
+  $('feedbackArea').innerHTML=`<div class="answerpanel">
+    <div class="answerblock answer-main"><div class="ablock-label">标准答案</div><div class="answertext">${esc(q.answer||'暂无答案').replace(/\n/g,'<br>')}</div></div>
+    <div class="answerblock"><div class="ablock-label">解析 / 评分要点</div><div class="explaintext">${esc(q.explanation||'暂无解析').replace(/\n/g,'<br>')}</div></div>
+    ${q.tags?`<div class="answer-tags">知识点：${esc(q.tags)}</div>`:''}
+    <div class="ratebar">${wrong?'<button class="big rate-good" id="resolveWrong">✓ 已掌握，移出错题</button>':'<button class="big rate-bad" id="markBad">✗ 记为错题</button>'}</div>
+    ${wrong?'<div class="small muted">这题目前在错题集中，确认掌握后点「已掌握，移出错题」。</div>':''}
+    <div class="small muted">不需要学习的题，可用下方“🗑 删除本题”直接移出题库。</div>
+  </div>`;
+  if(wrong)$('resolveWrong').onclick=()=>resolveWrong(q);else $('markBad').onclick=()=>rateQuestion(q);
+  requestAnimationFrame(()=>$('feedbackArea').scrollIntoView({behavior:'smooth',block:'nearest'}))
+}
+function rateQuestion(q){
+  recordAttempt(q,'',false,false);
+  const wasResolved=!!q.resolvedAt;q.resolvedAt=0;
+  saveLocal();engine.enqueueAttempt(data.attempts[data.attempts.length-1]);
+  if(wasResolved)engine.enqueueQuestion(q);
+  scheduleSync();renderQuestion();
+  toast('已加入错题集')
+}
+function resolveWrong(q){
+  q.resolvedAt=Date.now();touchQuestion(q);
+  engine.enqueueQuestion(q);
+  const drops=$('studyMode').value==='wrong'||$('filterState').value==='wrong';
+  if(!drops){renderQuestion();scheduleSync();toast('已移出错题集（下次标为错题会重新计入）');return}
+  if(currentIndex>=currentIds.length-1&&currentIndex>0)currentIndex--;
+  resetStudy();scheduleSync();toast('已移出错题集（下次标为错题会重新计入）')
+}
+function renderAll(){
+  const s=computeStats(data);
+  $('statTotal').textContent=s.total;$('statWrong').textContent=s.wrong;
+  renderBank();renderWrong();renderStats();renderConflicts();updateSyncDetail();updateBankUI()
+}
+function renderBank(){
+  const qs=filteredQuestions();
+  $('bankList').innerHTML=qs.length?qs.map(q=>`<div class="qitem"><div><span class="pill">${typeName(q.type)}</span> ${isWrong(data,q.id)?'<span class="pill bad">错题</span>':''}${q.favorite?' <span class="pill star">☆</span>':''}${q.reviewMark?' <span class="pill">🔖</span>':''}<p><b>${esc(q.stem.slice(0,150))}${q.stem.length>150?'…':''}</b></p><div class="small muted">${esc(q.tags||'未分类')} · ${esc(q.difficulty||'中等')} · 标错 ${attemptsFor(data,q.id).length} 次 · v${q.version||1}</div></div><button class="secondary fit" data-edit="${esc(q.id)}">编辑</button></div>`).join(''):'<div class="muted">暂无题目。可导入 JSON、手动添加或调用 AI 生成。</div>';
+  document.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>openEdit(b.dataset.edit))
+}
+function renderWrong(){
+  const qs=activeQuestions(data).filter(q=>isWrong(data,q.id));
+  $('wrongList').innerHTML=qs.length?qs.map(q=>{const hist=attemptsFor(data,q.id).filter(a=>a.correct===false||a.selfRated===false);
+    return `<div class="qitem"><div><span class="pill bad">${typeName(q.type)}</span><p><b>${esc(q.stem.slice(0,170))}</b></p><div class="small muted">错误/未掌握 ${hist.length} 次：${hist.map(a=>new Date(a.time).toLocaleDateString()).slice(-3).join('、')}</div></div><div class="fit" style="display:flex;gap:6px"><button class="secondary" data-goto="${esc(q.id)}">练习</button><button class="secondary" data-resolve="${esc(q.id)}">移出错题</button></div></div>`}).join(''):'<div class="muted">目前没有错题。</div>';
+  document.querySelectorAll('[data-goto]').forEach(b=>b.onclick=()=>{currentIds=qs.map(q=>q.id);currentIndex=currentIds.indexOf(b.dataset.goto);switchView('study');renderQuestion()});
+  document.querySelectorAll('[data-resolve]').forEach(b=>b.onclick=()=>{const q=getQ(data,b.dataset.resolve);if(!q)return;q.resolvedAt=Date.now();touchQuestion(q);engine.enqueueQuestion(q);scheduleSync();toast('已移出错题集（下次标为错题会重新计入）')})
+}
+function renderStats(){
+  const s=computeStats(data),qs=activeQuestions(data);
+  $('sTotal').textContent=s.total;$('sWrong').textContent=s.wrong;$('sReview').textContent=qs.filter(q=>q.reviewMark).length;
+  const tagOf=q=>(q.tags||'未分类').split(/[,，]/)[0].trim()||'未分类';
+  const wrongBy=keyFn=>{const m={};for(const q of qs){if(isWrong(data,q.id)){const k=keyFn(q);m[k]=(m[k]||0)+1}}return m};
+  const wrongType=wrongBy(q=>q.type),wrongTag=wrongBy(tagOf);
+  $('byTypeList').innerHTML=Object.keys(s.byType).length?Object.entries(s.byType).map(([t,v])=>`<div class="qitem"><div><p><b>${typeName(t)}</b></p><div class="small muted">共 ${v.total} 题 · 错题 ${wrongType[t]||0} 题</div></div></div>`).join(''):'<div class="muted">暂无数据</div>';
+  $('byTagList').innerHTML=Object.keys(s.byTag).length?Object.entries(s.byTag).sort((a,b)=>b[1].total-a[1].total).slice(0,10).map(([t,v])=>`<div class="qitem"><div><p><b>${esc(t)}</b></p><div class="small muted">共 ${v.total} 题 · 错题 ${wrongTag[t]||0} 题</div></div></div>`).join(''):'<div class="muted">暂无数据</div>'
+}
+function renderConflicts(){
+  const n=data.conflicts.length;$('conflictBanner').classList.toggle('hidden',n===0);$('conflictCount').textContent=n;
+  $('conflictList').innerHTML=n?data.conflicts.map(c=>`<div class="genitem"><h4>题目冲突：${esc(String(c.local.stem||'').slice(0,80))}</h4>
+    <div class="two"><div><label>本机版本（你的修改）</label><div class="qitem"><p>${esc(String(c.local.stem||'').slice(0,200))}</p><div class="small muted">答案：${esc(c.local.answer||'')}</div></div></div>
+    <div><label>云端版本（另一台设备）</label><div class="qitem"><p>${esc(String(c.remote.stem||'').slice(0,200))}</p><div class="small muted">答案：${esc(c.remote.answer||'')}</div></div></div></div>
+    <div class="row" style="margin-top:8px"><button data-c-keep="${esc(c.cid)}">保留云端版</button><button class="secondary" data-c-mine="${esc(c.cid)}">以本机版覆盖</button><button class="secondary" data-c-copy="${esc(c.cid)}">本机版另存为新题</button></div>`).join(''):'<div class="muted">没有待处理的冲突。</div>';
+  document.querySelectorAll('[data-c-keep]').forEach(b=>b.onclick=()=>{data.conflicts=data.conflicts.filter(x=>x.cid!==b.dataset.cKeep);saveLocal();toast('已保留云端版本')});
+  document.querySelectorAll('[data-c-mine]').forEach(b=>b.onclick=()=>{const c=data.conflicts.find(x=>x.cid===b.dataset.cMine);if(!c)return;const q={...getQ(data,c.qid),...c.local,version:(getQ(data,c.qid)||{version:1}).version};touchQuestion(q);const i=data.questions.findIndex(x=>x.id===c.qid);if(i>=0)data.questions[i]=q;data.conflicts=data.conflicts.filter(x=>x.cid!==c.cid);saveLocal();engine.enqueueQuestion(q);doSync(true);toast('已用本机版本覆盖云端')});
+  document.querySelectorAll('[data-c-copy]').forEach(b=>b.onclick=()=>{const c=data.conflicts.find(x=>x.cid===b.dataset.cCopy);if(!c)return;const q={...c.local,id:makeId(),version:1,createdAt:nowIso(),updatedAt:nowIso()};data.conflicts=data.conflicts.filter(x=>x.cid!==c.cid);saveQuestionLocal(q,true);toast('本机版本已另存为新题')})
+}
+$('openConflicts').onclick=()=>$('conflictModal').classList.remove('hidden');
+$('closeConflicts').onclick=()=>$('conflictModal').classList.add('hidden');
+// ---- 导入 / 导出 / 备份恢复 ----
+function download(name,text,type='application/json'){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+function safeFileName(s){return (String(s||'').replace(/[\\/:*?"<>|]/g,'_').trim()||'题库').slice(0,40)}
+function currentBankName(){const b=activeBank();return b?b.name:'未命名题库'}
+$('exportJson').onclick=()=>download('复习题库_'+safeFileName(currentBankName())+'_'+new Date().toISOString().slice(0,10)+'.json',JSON.stringify({bank:currentBankName(),questions:activeQuestions(data)},null,2));
+$('exportProgress').onclick=()=>download('复习进度_'+safeFileName(currentBankName())+'_'+new Date().toISOString().slice(0,10)+'.json',JSON.stringify({bank:currentBankName(),attempts:data.attempts,exportedAt:nowIso()},null,2));
+$('exportBackup').onclick=()=>{
+  const list=registry.banks.map(b=>({id:b.id,name:b.name,createdAt:b.createdAt,data:b.id===registry.activeBankId?data:readBankSlot(b.id)}));
+  download('全部题库备份_'+new Date().toISOString().slice(0,10)+'.json',JSON.stringify(buildBanksBundle(list),null,2))
+};
+$('importJson').addEventListener('change',async e=>{
+  const f=e.target.files[0];if(!f)return;$('importReport').innerHTML='';
+  let arr=null;
+  try{const j=JSON.parse(await f.text());arr=Array.isArray(j)?j:(j.questions||j.items)}
+  catch(err){$('importReport').innerHTML=`<div class="errbox">导入失败：文件不是有效 JSON（${esc(err.message.slice(0,120))}）。现有题库未被修改。</div>`;e.target.value='';return}
+  const v=validateQuestionsInput(arr);
+  if(v.empty){$('importReport').innerHTML='<div class="errbox">导入失败：没有识别到有效题目。现有题库未被修改。</div>';e.target.value='';return}
+  if(!v.ok){$('importReport').innerHTML=`<div class="errbox">导入中止：发现 ${v.errors.length} 个问题行，现有题库未被修改。<br>${v.errors.slice(0,12).map(x=>`第 ${x.row} 行：${esc(x.reason)}`).join('<br>')}${v.errors.length>12?'<br>……':''}</div>`;e.target.value='';return}
+  const mode=$('dupMode').value;
+  if(v.items.length>200&&!confirm(`本次将校验通过并导入 ${v.items.length} 道题（重复处理：${({skip:'跳过',update:'更新',copy:'另存'})[mode]}）。确认继续？`)){e.target.value='';return}
+  const res=mergeQuestions(data.questions,v.items,mode);
+  batch(()=>{res.touched.forEach(q=>engine.enqueueQuestion(q));saveLocal()});
+  scheduleSync();resetStudy();
+  $('importReport').innerHTML=`<div class="okbox">导入完成：新增 ${res.added}，更新 ${res.updated}，跳过重复 ${res.skipped}${res.dupes.length?`（重复 ${res.dupes.length} 条按“${({skip:'跳过',update:'更新',copy:'另存为新题'})[mode]}”处理）`:''}。</div>`;
+  e.target.value=''
+});
+$('restoreFile').addEventListener('change',async e=>{
+  const f=e.target.files[0];if(!f)return;
+  try{
+    let j=null;try{j=JSON.parse(await f.text())}catch(err){throw Error('文件不是有效 JSON（'+String(err.message).slice(0,120)+'）')}
+    const c=classifyBackup(j);
+    if(!c.ok)throw Error(c.reason);
+    if(c.kind==='bundle'){
+      const banks=c.bundle.banks;
+      const names=banks.map(b=>`${String(b.name||'未命名题库')}（题目 ${b.data.questions.length} · 作答 ${b.data.attempts.length}）`).join('、');
+      if(!confirm(`这是多题库备份，含 ${banks.length} 个题库：\n${names}\n\n同名题库会被【整体替换】，新题库追加建立。当前题库会先保存快照（可回滚）。确认恢复？`)){e.target.value='';return}
+      if(!writeStore(snapKey(),localStorage.getItem(slot())||''))throw Error('本机存储空间不足，无法保存回滚快照');
+      const res=applyBundleRestore(normalizeRegistry(registry),c.bundle);
+      const writes=res.writes.map(w=>{const d=migrateWrongResolved(w.data);if(d.questions.length)d.outbox=buildReuploadOps(d,w.id);return[bankSlotKey(w.id),JSON.stringify(d)]});
+      const failed=writes.filter(([k,txt])=>!writeStore(k,txt,true)).length;
+      registry=normalizeRegistry(res.registry);saveRegistry();
+      data=readBankSlot(registry.activeBankId);
+      currentIndex=0;saveLocal();resetStudy();
+      toast('已恢复 '+res.created+' 个新题库、覆盖 '+res.overwritten+' 个同名题库');
+      $('importReport').innerHTML=failed?`<div class="errbox">本机存储空间不足，有 ${failed} 个题库未能写入本机（云端仍在，登录后重新同步可取回）。</div>`:'';
+      if(auth&&auth.access_token)doSync(true)
+    }else{
+      const b=j;
+      const preview=`题目 ${b.questions.length} 条（含已删除 ${b.questions.filter(q=>q.deleted).length}）· 作答记录 ${b.attempts.length} 条`;
+      if(!confirm(`恢复备份将【整体替换】当前题库「${currentBankName()}」（其他题库不受影响）。\n${preview}\n\n当前数据会先自动保存为快照（可回滚）。确认恢复？`)){e.target.value='';return}
+      if(!writeStore(snapKey(),localStorage.getItem(slot())||''))throw Error('本机存储空间不足，无法保存回滚快照');
+      const nd={...makeBankData(registry.activeBankId),...structuredClone(b)};nd.schema=SCHEMA_VERSION;nd.bankId=registry.activeBankId;
+      migrateWrongResolved(nd);
+      nd.questions=nd.questions.map(q=>normalizeQuestionRestore(q));
+      nd.outbox=nd.questions.length?buildReuploadOps(nd,registry.activeBankId):[];
+      data=nd;currentIndex=0;saveLocal();resetStudy();
+      toast('备份已恢复，快照已保存，可回滚');
+      if(auth&&auth.access_token)doSync(true)
+    }
+  }catch(err){$('importReport').innerHTML=`<div class="errbox">恢复失败：${esc(String(err.message).slice(0,200))}。当前数据未改动。</div>`}
+  e.target.value=''
+});
+function normalizeQuestionRestore(q){const n=normalizeQuestion(q);n.version=q.version||n.version;n.deleted=!!q.deleted;n.createdAt=q.createdAt||n.createdAt;return n}
+function buildReuploadOps(nd,bankId){return nd.questions.map(q=>({opId:makeId(),kind:'q',entityId:q.id,payload:{data:bankId?{...qCloud(q),bank:bankId}:qCloud(q),baseVersion:q.version||1,deleted:!!q.deleted}}))}
+$('rollbackSnapshot').onclick=()=>{
+  const snap=localStorage.getItem(snapKey());
+  if(!snap){toast('本题库没有可用快照（快照只在恢复备份前生成）');return}
+  if(!confirm(`确定回滚题库「${currentBankName()}」到上一次恢复备份前的快照？当前数据将被快照替换。`))return;
+  try{const d=migrateWrongResolved(JSON.parse(snap));d.bankId=registry.activeBankId;data=d;saveLocal();resetStudy();toast('已回滚到快照');if(auth&&auth.access_token)doSync(true)}catch(e){toast('快照数据损坏，无法回滚')}
+};
+$('clearLocal').onclick=()=>{
+  const bn=currentBankName();
+  if(!confirm(`清空当前题库「${bn}」的本机数据（${computeStats(data).total} 道题）？其他题库不受影响。未同步到云端的修改会丢失，强烈建议先“全部备份”。`))return;
+  if(!confirm('二次确认：不可撤销。若已登录云端，本机清空不会向云端发送删除指令——下次同步会把云端题目重新拉回本题库。仍要清空？'))return;
+  localStorage.removeItem(slot());data=makeBankData(registry.activeBankId);currentIndex=0;saveLocal();resetStudy();toast('已清空题库「'+bn+'」的本机数据')
+};
+// ---- 题库切换与管理 ----
+function updateBankUI(){
+  const sel=$('bankSelect');if(!sel)return;
+  sel.innerHTML=registry.banks.map(b=>`<option value="${esc(b.id)}"${b.id===registry.activeBankId?' selected':''}>${esc(b.name)}</option>`).join('');
+  const b=activeBank(),s=computeStats(data);
+  $('bankMeta').textContent=b?`${s.total} 题 · 错题 ${s.wrong} · 待同步 ${engine.pendingCount()}`+(b.remoteDeleted?' · 已被其他设备删除':''):'暂无题库';
+  $('deleteBank').disabled=!b;
+  $('renameBank').disabled=!b
+}
+function persistCurrentBank(){writeStore(slot(),JSON.stringify(data))}
+function switchBank(id){
+  if(!id||id===registry.activeBankId)return;
+  if(!registry.banks.some(b=>b.id===id))return;
+  persistCurrentBank();
+  registry=normalizeRegistry({...registry,activeBankId:id});saveRegistry();
+  data=readBankSlot(registry.activeBankId);
+  currentIndex=0;currentQuestionId=null;saveLocal();resetStudy();
+  const b=activeBank();
+  if(b)toast('已切换到题库「'+b.name+'」');
+  if(auth&&auth.access_token)doSync(false)
+}
+$('bankSelect').onchange=e=>switchBank(e.target.value);
+$('newBank').onclick=()=>{
+  const name=prompt('新题库名称（例如：有机化学 / 数学分析下册）','');
+  if(name===null)return;
+  if(!name.trim()){toast('题库名称不能为空');return}
+  persistCurrentBank();
+  const r=addBankToRegistry(normalizeRegistry(registry),name.trim());
+  registry=r.registry;saveRegistry();
+  data=makeBankData(r.bank.id);
+  currentIndex=0;saveLocal();resetStudy();scheduleSync();
+  toast('已新建并切换到题库「'+r.bank.name+'」')
+};
+$('renameBank').onclick=()=>{
+  const b=activeBank();if(!b)return;
+  const name=prompt('重命名题库「'+b.name+'」',b.name);
+  if(name===null||!name.trim())return;
+  registry=renameBankInRegistry(normalizeRegistry(registry),b.id,name.trim());saveRegistry();
+  queueBankMeta(activeBank(),false);
+  updateBankUI();renderAll();scheduleSync();
+  toast('题库已重命名为「'+activeBank().name+'」')
+};
+$('deleteBank').onclick=()=>{
+  const b=activeBank();if(!b)return;
+  const total=computeStats(data).total;
+  if(!confirm(`删除题库「${b.name}」？本机将移除其中 ${total} 道题和全部核对记录，其他题库不受影响。\n已登录云端时，另一台设备上的这个题库也会被删除。`))return;
+  const typed=prompt('危险操作：请输入该题库的准确名称以确认删除（' + b.name + '）');
+  if(typed===null)return;
+  if(typed.trim()!==b.name){toast('名称不匹配，已取消删除');return}
+  persistCurrentBank();
+  const name=b.name,did=b.id;
+  deleteLocalBank(did,{queueTombstone:true});
+  toast('题库「'+name+'」已删除'+(auth&&auth.access_token?'，将在同步后通知其他设备':''));
+  scheduleSync()
+};
+// ---- 题目编辑 ----
+$('addQuestion').onclick=()=>openEdit(null);
+function openEdit(id){
+  editId=id;const q=id?getQ(data,id):{type:'fill',stem:'',answer:'',explanation:'',tags:'',source:'',difficulty:'中等'};
+  $('editTitle').textContent=id?'编辑题目':'手动添加题目';
+  $('eType').value=q.type==='fill'?'fill':'short';$('eStem').value=q.stem;$('eAnswer').value=q.answer;$('eExplanation').value=q.explanation;$('eTags').value=q.tags;$('eSource').value=q.source;$('eDiff').value=q.difficulty||'中等';
+  $('deleteQuestion').classList.toggle('hidden',!id);$('editModal').classList.remove('hidden')
+}
+$('closeEdit').onclick=()=>{$('editModal').classList.add('hidden');$('saveQuestion').onclick=defaultSaveQuestion};
+$('deleteQuestion').onclick=async()=>{if(!editId)return;const id=editId;if(await deleteQuestionLocal(id)){$('editModal').classList.add('hidden');resetStudy()}};
+// ---- 复习操作 ----
+$('prevQ').onclick=()=>{if(currentIndex>0){currentIndex--;renderQuestion()}};
+$('nextQ').onclick=()=>{if(currentIndex<currentIds.length-1){currentIndex++;renderQuestion()}};
+$('showAns').onclick=showAnswer;
+
+$('btnFav').onclick=()=>{const q=getQ(data,currentQuestionId);if(!q)return;q.favorite=!q.favorite;saveLocal();engine.enqueueQuestion(q);scheduleSync();renderQuestion()};
+$('btnReview').onclick=()=>{const q=getQ(data,currentQuestionId);if(!q)return;q.reviewMark=!q.reviewMark;saveLocal();engine.enqueueQuestion(q);scheduleSync();renderQuestion()};
+$('btnDelete').onclick=async()=>{const q=getQ(data,currentQuestionId);if(!q)return;const id=q.id,wasLast=currentIndex>=currentIds.length-1;if(!await deleteQuestionLocal(id))return;if(wasLast&&currentIndex>0)currentIndex--;resetStudy()};
+$('applyFilter').onclick=()=>{currentIndex=0;resetStudy();toast('已应用筛选')};$('studyMode').onchange=()=>{currentIndex=0;resetStudy()};
+$('startWrong').onclick=()=>{$('studyMode').value='wrong';currentIndex=0;switchView('study')};
+$('clearWrong').onclick=()=>{if(!confirm('确定清空全部错题标记？核对记录会保留。'))return;
+  const t=Date.now();let n=0;
+  batch(()=>{for(const q of activeQuestions(data))if(isWrong(data,q.id)){q.resolvedAt=t;touchQuestion(q);engine.enqueueQuestion(q);n++}});
+  if(!n){toast('目前没有错题');return}
+  scheduleSync();toast('已清空 '+n+' 条错题标记')};
+$('tabs').querySelectorAll('button').forEach(b=>b.onclick=()=>switchView(b.dataset.view));
+// ---- 课件解析 ----
+function loadScript(src){return new Promise((resolve,reject)=>{if([...document.scripts].some(s=>s.src===src)){resolve();return}const s=document.createElement('script');s.src=src;s.onload=resolve;s.onerror=()=>reject(Error('无法加载解析库，请检查网络，或改用粘贴文本'));document.head.appendChild(s)})}
+async function parseSourceFile(file){
+  const name=file.name.toLowerCase();
+  if(name.endsWith('.txt')||name.endsWith('.md'))return{text:await file.text(),pages:null};
+  if(name.endsWith('.pdf')){
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');
+    if(!window.pdfjsLib)throw Error('PDF.js 加载失败');
+    pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    const pdf=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise;
+    const pages=[];
+    for(let i=1;i<=pdf.numPages;i++){const p=await pdf.getPage(i);const c=await p.getTextContent();pages.push(c.items.map(x=>x.str).join(' '))}
+    const det=detectScannedPdf(pages);
+    if(det.suspected)throw Error(`疑似扫描版 PDF（${Math.round(det.emptyRatio*100)}% 页面无可提取文本）。请先用 OCR 工具转换为文字版，或手动粘贴文本。本原型未内置 OCR。`);
+    return{text:pages.map((t,i)=>`\n[第 ${i+1} 页]\n`+t).join('\n'),pages:pdf.numPages}
+  }
+  if(name.endsWith('.pptx')||name.endsWith('.docx')){
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js');
+    if(!window.JSZip)throw Error('JSZip 加载失败');
+    const zip=await JSZip.loadAsync(await file.arrayBuffer());
+    if(name.endsWith('.docx')){
+      const f=zip.files['word/document.xml'];if(!f)throw Error('DOCX 结构异常：缺少 word/document.xml');
+      const xml=await f.async('text');const doc=new DOMParser().parseFromString(xml,'application/xml');
+      return{text:[...doc.getElementsByTagName('w:t')].map(n=>n.textContent).join(' '),pages:null}
+    }
+    const paths=Object.keys(zip.files).filter(p=>/^ppt\/slides\/slide\d+\.xml$/.test(p)).sort((a,b)=>Number(a.match(/slide(\d+)/)[1])-Number(b.match(/slide(\d+)/)[1]));
+    if(!paths.length)throw Error('PPTX 中没有找到幻灯片');
+    const parts=[];
+    for(const p of paths){const xml=await zip.files[p].async('text');const doc=new DOMParser().parseFromString(xml,'application/xml');parts.push(`\n[第 ${p.match(/slide(\d+)/)[1]} 页]\n`+[...doc.getElementsByTagName('a:t')].map(n=>n.textContent).join(' '))}
+    return{text:parts.join('\n'),pages:paths.length}
+  }
+  throw Error('不支持的文件类型：'+file.name+'（支持 PDF/PPTX/DOCX/TXT/MD）')
+}
+$('sourceFiles').addEventListener('change',async e=>{
+  const files=[...e.target.files];if(!files.length)return;
+  $('fileStatus').textContent='正在本机解析课件（0/'+files.length+'）……';
+  const parts=[];const errs=[];
+  for(let i=0;i<files.length;i++){$('fileStatus').textContent=`正在本机解析课件（${i+1}/${files.length}：${files[i].name}）……`;
+    try{const r=await parseSourceFile(files[i]);parts.push(`===== 文件：${files[i].name} =====\n`+r.text)}catch(err){errs.push(files[i].name+'：'+err.message)}}
+  if(parts.length){$('sourceText').value=($('sourceText').value+'\n\n'+parts.join('\n\n')).trim();renderSourcePreview()}
+  $('fileStatus').innerHTML=errs.length?`<span style="color:var(--bad)">解析失败 ${errs.length} 个：</span>${esc(errs.join('；'))}${parts.length?`；成功 ${parts.length} 个已加入文本。`:''}`:`已解析 ${parts.length} 个文件（本机完成，未上传原始文件）。请检查文本提取是否完整。`;
+  e.target.value=''
+});
+$('sourceText').addEventListener('input',renderSourcePreview);
+function renderSourcePreview(){
+  const t=$('sourceText').value.trim();const per=Number($('genPerBatch').value)||5;
+  if(!t){$('sendPreviewMeta').textContent='（暂无文本）';$('sendPreview').textContent='';return}
+  const chunks=splitChunks(t,Math.max(2000,per*1200));
+  $('sendPreviewMeta').textContent=`共 ${t.length} 字符 → 将分成 ${chunks.length} 批发送（每批 ≤ ${Math.max(2000,per*1200)} 字符）。以下为第 1 批前 800 字符：`;
+  $('sendPreview').textContent=chunks[0]?chunks[0].slice(0,800)+(chunks[0].length>800?'……':''):''
+}
+// ---- AI 生成（预览确认制） ----
+function extractJson(s){
+  let t=String(s||'').trim().replace(/^```(?:json)?/i,'').replace(/```\s*$/,'').trim();
+  try{return JSON.parse(t)}catch(e){}
+  const a=t.indexOf('['),b=t.lastIndexOf(']');if(a>=0&&b>a){try{return JSON.parse(t.slice(a,b+1))}catch(e){}}
+  const c=t.indexOf('{'),d=t.lastIndexOf('}');if(c>=0&&d>c){try{const j=JSON.parse(t.slice(c,d+1));return j.questions||j}catch(e){}}
+  throw Error('模型没有返回有效 JSON，请重试或降低每批题量')
+}
+function genTypesText(){const v=$('genTypes').value;return v==='fill'?'fill':v==='short'?'short':'fill, short'}
+async function callChatOnce(chunk,count){
+  const url=buildChatEndpoint(cfg.apiBase);
+  if(!url)throw Error('请先在“设置 / 同步”中填写 API Base URL');
+  const controller=new AbortController();
+  const ms=(Number(cfg.apiTimeout)||90)*1000;
+  const timer=setTimeout(()=>controller.abort(),ms);
+  const wantExpl=$('genExpl').checked,wantTags=$('genTags').checked;
+  const diff=$('genDiff').value;
+  const system=`你是严谨的大学课程题库生成器。只能根据提供的课件内容出题，不可编造事实。返回纯 JSON 数组，不要 Markdown、不要代码块。每个元素字段：type（只能取 fill 或 short）、stem（题干）、answer（填空题给出可接受答案并用|分隔多个写法；简答题给出参考答案要点）、explanation（解析或评分要点${wantExpl?'，必填':'，可为空字符串'}）、tags（知识点字符串${wantTags?'，必填':'，可为空'}）、source（课件页码或章节）、difficulty（简单/中等/困难）。不要输出选择题；不要输出 id 字段；题目之间避免重复。`;
+  const user=`请根据以下课件生成 ${count} 道题，题型：${genTypesText()}。难度倾向：${diff}。${($('genExtra').value||'').trim()?'额外要求：'+$('genExtra').value.trim():''}\n课件内容：\n${chunk}`;
+  let res;
+  try{res=await fetch(url,{method:'POST',signal:controller.signal,headers:{'Content-Type':'application/json',Authorization:'Bearer '+cfg.apiKey},body:JSON.stringify({model:cfg.apiModel,temperature:0.3,stream:false,messages:[{role:'system',content:system},{role:'user',content:user}]})})}
+  catch(e){clearTimeout(timer);if(e.name==='AbortError')throw Error('请求超时（'+Math.round(ms/1000)+' 秒），已中止。可在设置中调大超时或减小每批题量。');throw Error('网络请求失败或被 CORS 拦截：'+sanitizeSecrets(e.message))}
+  clearTimeout(timer);
+  const bodyText=await res.text();
+  if(!res.ok)throw Error(classifyApiError(res.status,bodyText));
+  let json;try{json=JSON.parse(bodyText)}catch(e){throw Error('API 返回的不是有效 JSON（可能被网关改写）。前 120 字符：'+sanitizeSecrets(bodyText.slice(0,120)))}
+  const content=json.choices&&json.choices[0]&&json.choices[0].message&&json.choices[0].message.content;
+  if(!content)throw Error('API 响应中没有 choices[0].message.content');
+  return content
+}
+$('generateBtn').onclick=async()=>{
+  if(busy)return;
+  if(!cfg.apiBase||!cfg.apiModel||!cfg.apiKey){toast('请先在“设置 / 同步”中配置 API');$('settingsModal').classList.remove('hidden');return}
+  const text=$('sourceText').value.trim();
+  if(!text){toast('请上传课件或粘贴课件文本');return}
+  busy=true;$('generateBtn').disabled=true;pendingGen=[];
+  const per=Number($('genPerBatch').value)||5;
+  const chunks=splitChunks(text,Math.max(2000,per*1200));
+  const total= Math.max(3,Math.min(80,Number($('genCount').value)||15));
+  let alloc=chunks.map(()=>Math.max(1,Math.floor(per)));
+  let sum=alloc.reduce((a,b)=>a+b,0);
+  while(sum>total){const i=alloc.indexOf(Math.max(...alloc));alloc[i]--;sum--}
+  const collected=[];const problems=[];
+  try{
+    for(let i=0;i<chunks.length;i++){
+      $('genStatus').textContent=`正在生成：第 ${i+1}/${chunks.length} 批（本批 ${alloc[i]} 题）……已收集 ${collected.length} 题`;
+      const content=await callChatOnce(chunks[i],alloc[i]);
+      let qs=extractJson(content);
+      if(qs&&!Array.isArray(qs)&&qs.questions)qs=qs.questions;
+      if(!Array.isArray(qs)){problems.push(`第 ${i+1} 批：返回不是数组`);continue}
+      const v=validateQuestionsInput(qs);
+      problems.push(...v.errors.map(x=>`第 ${i+1} 批 第 ${x.row} 条：${x.reason}`));
+      for(const raw of v.items){const q=normalizeQuestion(raw);q.id=makeId();collected.push(q)}
+      if(collected.length>=total)break
+    }
+    if(!collected.length){$('genStatus').innerHTML='<span style="color:var(--bad)">生成失败：没有得到有效题目'+(problems.length?'（'+esc(problems.slice(0,3).join('；'))+'）':'')+'。现有题库未做任何修改。</span>';return}
+    pendingGen=collected.slice(0,total);
+    renderGenPreview();
+    $('genStatus').textContent=`生成完成：共 ${pendingGen.length} 题待确认${problems.length?`，${problems.length} 条格式异常已丢弃`:''}。请在下方预览后确认导入。`
+  }catch(err){$('genStatus').innerHTML=`<span style="color:var(--bad)">生成中断：${esc(sanitizeSecrets(err.message).slice(0,240))}。现有题库未做任何修改。</span>`;if(collected.length){pendingGen=collected.slice(0,total);renderGenPreview();$('genStatus').innerHTML+='<div class="small">已收集的 '+pendingGen.length+' 题仍可在下方预览，确认前不会写入题库。</div>'}}
+  finally{busy=false;$('generateBtn').disabled=false}
+};
+function renderGenPreview(){
+  $('genPreviewCard').classList.toggle('hidden',pendingGen.length===0);
+  $('genPreviewSummary').textContent=`${pendingGen.length} 道候选题（全部为模型输出，属不可信内容，请逐题核对答案；确认前不会写入题库）。`;
+  $('genPreviewList').innerHTML=pendingGen.map((q,i)=>`<div class="genitem"><h4>${i+1}. [${typeName(q.type)}·${esc(q.difficulty)}] ${esc(q.stem.slice(0,120))}${q.stem.length>120?'…':''}</h4>
+    <details><summary class="small muted">查看完整内容</summary><div class="question" style="font-size:15px">${esc(q.stem)}</div><div class="kv"><span>答案</span><div>${esc(q.answer)}</div><span>解析</span><div>${esc(q.explanation||'—')}</div><span>知识点</span><div>${esc(q.tags||'—')}</div><span>来源</span><div>${esc(q.source||'—')}</div></div></details>
+    <div class="row" style="margin-top:8px"><button class="secondary fit" data-gedit="${i}">编辑</button><button class="danger fit" data-gdrop="${i}">丢弃本题</button></div></div>`).join('');
+  document.querySelectorAll('[data-gdrop]').forEach(b=>b.onclick=()=>{pendingGen.splice(Number(b.dataset.gdrop),1);renderGenPreview()});
+  document.querySelectorAll('[data-gedit]').forEach(b=>b.onclick=()=>editPending(Number(b.dataset.gedit)))
+}
+function editPending(i){
+  const q=pendingGen[i];
+  $('editTitle').textContent='编辑候选题目（第 '+(i+1)+' 条）';
+  $('eType').value=q.type;$('eStem').value=q.stem;$('eAnswer').value=q.answer;$('eExplanation').value=q.explanation;$('eTags').value=q.tags;$('eSource').value=q.source;$('eDiff').value=q.difficulty;
+  $('deleteQuestion').classList.add('hidden');
+  $('editModal').classList.remove('hidden');
+  $('saveQuestion').onclick=()=>{
+    const stem=$('eStem').value.trim(),ans=$('eAnswer').value.trim();
+    if(!stem||!ans){toast('题干和答案不能为空');return}
+    pendingGen[i]={...q,type:$('eType').value,stem,answer:ans,explanation:$('eExplanation').value,tags:$('eTags').value,source:$('eSource').value,difficulty:$('eDiff').value,updatedAt:nowIso()};
+    $('editModal').classList.add('hidden');$('saveQuestion').onclick=defaultSaveQuestion;renderGenPreview()
+  }
+}
+$('confirmImport').onclick=()=>{
+  if(!pendingGen.length)return;
+  const res=mergeQuestions(data.questions,pendingGen,'copy');
+  res.touched.forEach(q=>engine.enqueueQuestion(q));
+  pendingGen=[];$('genPreviewCard').classList.add('hidden');
+  saveLocal();scheduleSync();
+  toast(`已确认导入 ${res.added} 道新题${res.skipped?`，跳过 ${res.skipped} 道题干重复`:''}`);switchView('bank')
+};
+$('discardGen').onclick=()=>{if(confirm('放弃本次生成的所有候选题目？未导入，不影响题库。')){pendingGen=[];renderGenPreview();$('genStatus').textContent='已放弃本次生成。'}};
+// ---- 设置面板 ----
+$('settingsBtn').onclick=()=>{
+  $('settingsModal').classList.remove('hidden');
+  $('apiBase').value=cfg.apiBase||'';$('apiModel').value=cfg.apiModel||'';$('apiKey').value='';$('apiKey').placeholder=cfg.apiKey?'已保存（留空则不修改）':'sk-...';
+  $('apiTimeout').value=cfg.apiTimeout||90;
+  $('sbUrl').value=cfg.sbUrl||'';$('sbKey').value=cfg.sbKey||'';$('sbEmail').value=cfg.email||'';
+  setAuthStatus(auth&&auth.access_token?'已登录：'+((auth.user&&auth.user.email)||'账号'):'未登录');
+  updateSyncDetail()
+};
+$('closeSettings').onclick=()=>$('settingsModal').classList.add('hidden');
+$('saveAI').onclick=()=>{
+  const keepKey=$('apiKey').value.trim();
+  cfg={...cfg,apiBase:$('apiBase').value.trim(),apiModel:$('apiModel').value.trim(),apiTimeout:Math.min(600,Math.max(10,Number($('apiTimeout').value)||90))};
+  if(keepKey)cfg.apiKey=keepKey;
+  saveCfg();toast('AI 配置已保存在本机（密钥仅存本机浏览器，公用电脑请用“清除本机密钥”）')
+};
+$('clearKey').onclick=()=>{if(!cfg.apiKey){toast('本机没有已保存的密钥');return}if(confirm('确定清除本机保存的 API Key？清除后需重新填写才能调用 AI。')){delete cfg.apiKey;saveCfg();$('apiKey').value='';$('apiKey').placeholder='sk-...';toast('已清除本机 API Key')}};
+$('sbSignup').onclick=async()=>{
+  try{
+    cfg.sbUrl=$('sbUrl').value.trim().replace(/\/+$/,'');cfg.sbKey=$('sbKey').value.trim();cfg.email=$('sbEmail').value.trim();saveCfg();
+    if(!cfg.sbUrl||!cfg.sbKey||!cfg.email||!$('sbPassword').value)throw Error('请填写 Supabase URL、anon key、邮箱和密码');
+    const j=await sbAuth('/auth/v1/signup',{method:'POST',body:JSON.stringify({email:cfg.email,password:$('sbPassword').value})});
+    if(j&&j.access_token){persistAuth(j);toast('注册并登录成功');await doSync(true)}
+    else{setAuthStatus('注册请求已提交。若项目启用了邮箱验证，请先完成验证再登录。');$('sbPassword').value=''}
+  }catch(e){toast('注册失败：'+sanitizeSecrets(e.message));setAuthStatus('注册失败：'+sanitizeSecrets(e.message))}
+};
+$('sbLogin').onclick=async()=>{
+  try{
+    cfg.sbUrl=$('sbUrl').value.trim().replace(/\/+$/,'');cfg.sbKey=$('sbKey').value.trim();cfg.email=$('sbEmail').value.trim();saveCfg();
+    if(!cfg.sbUrl||!cfg.sbKey||!cfg.email||!$('sbPassword').value)throw Error('请填写完整登录信息');
+    const j=await sbAuth('/auth/v1/token?grant_type=password',{method:'POST',body:JSON.stringify({email:cfg.email,password:$('sbPassword').value})});
+    persistAuth(j);$('sbPassword').value='';toast('登录成功');await doSync(true)
+  }catch(e){toast('登录失败：'+sanitizeSecrets(e.message));setAuthStatus('登录失败：'+sanitizeSecrets(e.message))}
+};
+$('sbLogout').onclick=async()=>{
+  try{if(auth&&auth.access_token&&cfg.sbUrl)await fetch(sbBase()+'/auth/v1/logout',{method:'POST',headers:{apikey:cfg.sbKey,Authorization:'Bearer '+auth.access_token}}).catch(()=>{})}catch(e){}
+  persistAuth(null);clearTimeout(syncTimer);setSyncStatus('本机模式','');toast('已退出登录，本机题库保留，云端身份已清除')
+};
+$('syncNow').onclick=()=>doSync(true);
+$('reuploadAll').onclick=()=>{
+  if(!auth||!auth.access_token){toast('请先登录 Supabase 再重传');return}
+  if(!data.questions.length){toast('当前题库没有题目');return}
+  const live=data.questions.filter(q=>!q.deleted).length;
+  if(!confirm(`把当前题库「${currentBankName()}」全部 ${live} 道题（含 ${data.questions.length-live} 条删除标记）重新排队上传？\n云端版本更新的题不会被覆盖，会进冲突列表由你选择。`))return;
+  data.outbox=[...buildReuploadOps(data,registry.activeBankId),...data.outbox.filter(o=>o.kind==='attempt')];
+  saveLocal();toast('已加入重传队列，开始同步');doSync(true)
+};
+$('downloadSql').onclick=()=>download('supabase_setup_v2.sql',SUPABASE_SQL,'text/plain');
+// ---- 手动添加/编辑题目保存（默认处理器，editPending 会临时替换） ----
+function defaultSaveQuestion(){
+  const raw={id:editId||makeId(),type:$('eType').value,stem:$('eStem').value.trim(),answer:$('eAnswer').value.trim(),explanation:$('eExplanation').value,tags:$('eTags').value,source:$('eSource').value,difficulty:$('eDiff').value};
+  if(!raw.stem||!raw.answer){toast('题干和答案不能为空');return}
+  const i=data.questions.findIndex(x=>x.id===editId);
+  if(i>=0){const keep={version:data.questions[i].version,createdAt:data.questions[i].createdAt,favorite:data.questions[i].favorite,reviewMark:data.questions[i].reviewMark,resolvedAt:data.questions[i].resolvedAt,deleted:false};data.questions[i]=normalizeQuestion({...raw,...keep});saveQuestionLocal(data.questions[i],false)}
+  else saveQuestionLocal(normalizeQuestion(raw),true);
+  $('editModal').classList.add('hidden');resetStudy();toast('题目已保存')
+}
+$('saveQuestion').onclick=defaultSaveQuestion;
+const SUPABASE_SQL=`-- 随身复习题库 v2 数据库初始化（在 Supabase SQL Editor 执行）
+-- 安全要求：本脚本不含任何密钥；前端只用 anon key + 登录用户 JWT，RLS 强制按用户隔离。
+create table if not exists public.questions (
+  id uuid primary key,
+  user_id uuid not null references auth.users(id) on delete cascade,
+  data jsonb not null,
+  version integer not null default 1,
+  deleted boolean not null default false,
+  updated_at timestamptz not null default now(),
+  created_at timestamptz not null default now()
+);
+create index if not exists questions_user_updated on public.questions(user_id, updated_at);
+create table if not exists public.answer_attempts (
+  id uuid primary key,
+  user_id uuid not null references auth.users(id) on delete cascade,
+  qid uuid not null,
+  data jsonb not null,
+  created_at timestamptz not null default now()
+);
+create index if not exists attempts_user_created on public.answer_attempts(user_id, created_at);
+alter table public.questions enable row level security;
+alter table public.answer_attempts enable row level security;
+-- questions：仅已认证用户可读写自己的行；不提供 delete 策略（用软删除标记同步）
+drop policy if exists q_select on public.questions;
+drop policy if exists q_insert on public.questions;
+drop policy if exists q_update on public.questions;
+create policy q_select on public.questions for select to authenticated using (auth.uid() = user_id);
+create policy q_insert on public.questions for insert to authenticated with check (auth.uid() = user_id);
+create policy q_update on public.questions for update to authenticated using (auth.uid() = user_id) with check (auth.uid() = user_id);
+-- answer_attempts：追加式写入，仅可查看/新增自己的记录
+drop policy if exists a_select on public.answer_attempts;
+drop policy if exists a_insert on public.answer_attempts;
+create policy a_select on public.answer_attempts for select to authenticated using (auth.uid() = user_id);
+create policy a_insert on public.answer_attempts for insert to authenticated with check (auth.uid() = user_id);
+-- 乐观并发：版本匹配才更新，否则返回冲突行（保留双方数据由用户选择）
+create or replace function public.sync_question(p_id uuid, p_data jsonb, p_base_version integer, p_deleted boolean)
+returns jsonb language plpgsql security invoker as $$
+declare r public.questions%rowtype; v integer;
+begin
+  select * into r from public.questions where id = p_id;
+  if r.id is null then
+    begin
+      insert into public.questions(id,user_id,data,version,deleted) values (p_id, auth.uid(), p_data, 1, p_deleted);
+    exception when unique_violation then
+      raise exception 'forbidden: id owned by another user' using errcode = '42501';
+    end;
+    return jsonb_build_object('status','ok','version',1);
+  end if;
+  if r.version = p_base_version or (p_base_version = 0 and r.version = 1) then
+    update public.questions set data = p_data, version = version + 1, deleted = p_deleted, updated_at = now()
+      where id = p_id and user_id = auth.uid() returning version into v;
+    if v is null then raise exception 'forbidden' using errcode = '42501'; end if;
+    return jsonb_build_object('status','ok','version',v);
+  end if;
+  return jsonb_build_object('status','conflict','row', jsonb_build_object('id',r.id,'data',r.data,'version',r.version,'deleted',r.deleted,'updated_at',r.updated_at));
+end $$;
+-- 幂等追加答题记录：同 id 重复提交不会报错也不会产生副本
+create or replace function public.add_attempt(p_id uuid, p_qid uuid, p_data jsonb)
+returns jsonb language plpgsql security invoker as $$
+begin
+  insert into public.answer_attempts(id,user_id,qid,data) values (p_id, auth.uid(), p_qid, p_data)
+  on conflict (id) do nothing;
+  return jsonb_build_object('inserted', found);
+end $$;
+grant usage on schema public to authenticated;
+grant select, insert, update on public.questions to authenticated;
+grant select, insert on public.answer_attempts to authenticated;
+grant execute on function public.sync_question(uuid, jsonb, integer, boolean) to authenticated;
+grant execute on function public.add_attempt(uuid, uuid, jsonb) to authenticated;
+`;
+// ---- 启动 ----
+function hydrate(){
+  if(cfg.apiBase)$('apiBase').value=cfg.apiBase;if(cfg.apiModel)$('apiModel').value=cfg.apiModel;if(cfg.apiTimeout)$('apiTimeout').value=cfg.apiTimeout;
+  if(cfg.sbUrl)$('sbUrl').value=cfg.sbUrl;if(cfg.sbKey)$('sbKey').value=cfg.sbKey;if(cfg.email)$('sbEmail').value=cfg.email;
+  if(auth&&auth.access_token){setSyncStatus('待同步','warn');setAuthStatus('已登录：'+((auth.user&&auth.user.email)||'账号'));doSync(false)}
+  else setSyncStatus('本机模式','');
+  renderSourcePreview();renderAll();resetStudy();updateSyncDetail()
+}
+hydrate();
+// ---- PWA ----
+(async()=>{
+  // 安装成本机应用后申请持久存储，避免浏览器在空间紧张时清掉题库
+  try{if(navigator.storage&&navigator.storage.persist){const already=await navigator.storage.persisted();if(!already)await navigator.storage.persist()}}catch(e){}
+  if(!('serviceWorker' in navigator))return;
+  if(location.protocol!=='https:'&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1')return;
+  try{await navigator.serviceWorker.register('sw.js',{scope:'./'})}catch(e){console.warn('离线缓存注册失败',e)}
+})();
+</script>
+</body>
+</html>
