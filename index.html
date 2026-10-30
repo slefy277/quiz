@@ -673,6 +673,19 @@ function planBankAlignment(remoteBanks,localId,localName,localCount,localIds){
   if(!named.length&&remoteBanks.length===1&&ids.length===1)return remoteBanks[0].tag;
   return null
 }
+// 云端有、本机没有的题库；skip 里存着用户拒绝过的 'add|<tag>'
+function remoteBanksMissing(remoteBanks,localIds,skip){
+  const ids=Array.isArray(localIds)?localIds:[];
+  const seen=new Set(),out=[];
+  for(const b of Array.isArray(remoteBanks)?remoteBanks:[]){
+    if(!b||typeof b.tag!=='string'||!b.tag)continue;
+    if(ids.includes(b.tag)||seen.has(b.tag))continue;
+    if(skip&&typeof skip.has==='function'&&skip.has('add|'+b.tag))continue;
+    seen.add(b.tag);
+    out.push({tag:b.tag,name:String(b.name||'').trim(),count:Number(b.count)||0})
+  }
+  return out
+}
 // ---- 题库元数据（改名/删除跨设备传播）：复用 questions 表的特殊行，不新增 SQL ----
 const BANK_META_KIND='bank-meta';
 function isBankMetaRow(r){return !!(r&&r.data&&r.data.kind===BANK_META_KIND)}
@@ -794,7 +807,7 @@ function applyBundleRestore(reg,bundle,now){
   if(!registry.banks.some(b=>b.id===registry.activeBankId))registry.activeBankId=registry.banks.length?registry.banks[0].id:'';
   return{registry,writes,created,overwritten}
 }
-const CORE_EXPORTS={makeId,nowIso,SCHEMA_VERSION,emptyData,canonical,normType,isLegacyChoice,normalizeOptions,normalizeQuestion,migrateV1,migrateWrongResolved,activeQuestions,getQ,attemptsFor,isWrong,wrongCountFor,computeStats,validateQuestionsInput,mergeQuestions,checkAnswer,splitChunks,detectScannedPdf,buildChatEndpoint,sanitizeSecrets,classifyApiError,backoffDelay,isPermanentPushError,qCloud,qFromCloud,applyRemoteChanges,createSyncEngine,BANK_SCHEMA,DEFAULT_BANK_NAME,bankSlotKey,bankSnapshotKey,normalizeRegistry,uniqueBankName,addBankToRegistry,renameBankInRegistry,removeBankFromRegistry,planBankAlignment,BANK_META_KIND,isBankMetaRow,bankMetaFromRow,normalizeBankMetaQueue,upsertBankMetaOp,removeBankMetaOp,applyBankMetaToRegistry,planBankMerge,makeBankData,migrateLegacyToBanks,buildBanksBundle,classifyBackup,applyBundleRestore};
+const CORE_EXPORTS={makeId,nowIso,SCHEMA_VERSION,emptyData,canonical,normType,isLegacyChoice,normalizeOptions,normalizeQuestion,migrateV1,migrateWrongResolved,activeQuestions,getQ,attemptsFor,isWrong,wrongCountFor,computeStats,validateQuestionsInput,mergeQuestions,checkAnswer,splitChunks,detectScannedPdf,buildChatEndpoint,sanitizeSecrets,classifyApiError,backoffDelay,isPermanentPushError,qCloud,qFromCloud,applyRemoteChanges,createSyncEngine,BANK_SCHEMA,DEFAULT_BANK_NAME,bankSlotKey,bankSnapshotKey,normalizeRegistry,uniqueBankName,addBankToRegistry,renameBankInRegistry,removeBankFromRegistry,planBankAlignment,remoteBanksMissing,BANK_META_KIND,isBankMetaRow,bankMetaFromRow,normalizeBankMetaQueue,upsertBankMetaOp,removeBankMetaOp,applyBankMetaToRegistry,planBankMerge,makeBankData,migrateLegacyToBanks,buildBanksBundle,classifyBackup,applyBundleRestore};
 //</CORE-END>
 
 const $=id=>document.getElementById(id);
@@ -1036,6 +1049,16 @@ function applyIncomingBankMeta(list){
   saveRegistry();saveLocal();updateBankUI();
   return activeGone
 }
+// 直接采用云端的题库标识建一个空库，切换过去就会按该标识拉取题目
+function createBankFromRemote(tag,name,meta){
+  if(!tag||registry.banks.some(b=>b.id===tag))return false;
+  const entry={id:tag,name:uniqueBankName(normalizeRegistry(registry),name||'未命名题库'),createdAt:nowIso(),updatedAt:nowIso()};
+  if(meta&&meta.metaId){entry.metaId=meta.metaId;entry.metaVersion=Number(meta.version)||1}
+  registry={...registry,banks:registry.banks.concat([entry])};
+  saveRegistry();
+  writeStore(bankSlotKey(tag),JSON.stringify(makeBankData(tag)),true);
+  return true
+}
 function deleteLocalBank(id,opts){
   opts=opts||{};
   const b=registry.banks.find(x=>x.id===id);
@@ -1148,6 +1171,21 @@ async function doSync(manual){
           const ok=confirm(`云端已有一个同名题库「${currentBankName()}」（来自另一台设备，${rb?rb.count:0} 道题）。\n是否把本机本题库的 ${live} 道题合并进去？\n合并按题干自动去重，核对记录随题保留。`);
           if(ok)return mergeIntoBank(tag,rb&&rb.name);
           mergeDeclined.add(bid+'|'+tag);saveMergeDeclined(mergeDeclined)
+        }
+      }
+    }
+    // 云端有、本机没有的题库：提示一键建立（自动同步时尊重曾经的拒绝，手动同步时总会再问一次）
+    if(res.ok&&wasFullPull){
+      const missing=remoteBanksMissing(res.remoteBanks,registry.banks.map(b=>b.id),manual?null:mergeDeclined);
+      if(missing.length){
+        const names=missing.map(m=>'「'+(m.name||'未命名题库')+'」'+(m.count?'（'+m.count+' 道题）':'')).join('、');
+        if(confirm('云端还有 '+missing.length+' 个本机没有的题库：'+names+'。\n是否在本机建立？建立后切换过去会自动下载题目。')){
+          let n=0;
+          for(const m of missing){if(createBankFromRemote(m.tag,m.name,(res.bankMeta||[]).find(x=>x.tag===m.tag&&!x.deleted)))n++}
+          if(n){updateBankUI();toast('已建立 '+n+' 个题库，切换过去会自动下载题目')}
+        }else{
+          for(const m of missing)mergeDeclined.add('add|'+m.tag);
+          saveMergeDeclined(mergeDeclined)
         }
       }
     }

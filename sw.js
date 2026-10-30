@@ -1,5 +1,5 @@
 // 只缓存本应用自己的静态资源；Supabase 等跨域请求一律直连，绝不进缓存
-const VERSION = 'v4-2026-10-30';
+const VERSION = 'v5-2026-10-30';
 const CACHE = 'tq-' + VERSION;
 const SHELL = [
   './',
